@@ -6,6 +6,12 @@ export const BOOKS: Book[] = [
     title: 'The Midnight Library', author: 'Matt Haig',
     price: 24.99, discountPrice: 18.99,
     cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1524578271613-d550eacf6090?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1476275466078-4007374efbbe?w=400&h=600&fit=crop',
+    ],
     rating: 4.5, reviewCount: 342, genres: ['Fiction', 'Fantasy'],
     formats: ['Hardcover', 'Paperback', 'eBook', 'Audiobook'],
     description: 'Between life and death there is a library, and within that library, the shelves go on forever. Every book provides a chance to try another life you could have lived.',
