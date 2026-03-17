@@ -39,6 +39,11 @@ export const BOOKS: Book[] = [
     title: 'Atomic Habits', author: 'James Clear',
     price: 27.99, discountPrice: 21.99,
     cover: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=600&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1518744386442-2d48ac1f0f8f?w=400&h=600&fit=crop',
+    ],
     rating: 4.8, reviewCount: 1203, genres: ['Non-Fiction', 'Self-Help'],
     formats: ['Hardcover', 'Paperback', 'eBook', 'Audiobook'],
     description: 'An easy & proven way to build good habits & break bad ones. Tiny changes, remarkable results.',
