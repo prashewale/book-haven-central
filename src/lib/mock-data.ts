@@ -66,6 +66,12 @@ export const BOOKS: Book[] = [
     title: 'Project Hail Mary', author: 'Andy Weir',
     price: 28.99, discountPrice: 22.99,
     cover: 'https://images.unsplash.com/photo-1531988042231-d39a9cc12a9a?w=400&h=600&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1531988042231-d39a9cc12a9a?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1524578271613-d550eacf6090?w=400&h=600&fit=crop',
+    ],
     rating: 4.9, reviewCount: 723, genres: ['Fiction', 'Sci-Fi'],
     formats: ['Hardcover', 'Paperback', 'eBook', 'Audiobook'],
     description: 'Ryland Grace is the sole survivor on a desperate, last-chance mission—and if he fails, humanity and the earth itself are finished.',
