@@ -23,6 +23,11 @@ export const BOOKS: Book[] = [
     title: 'Where the Crawdads Sing', author: 'Delia Owens',
     price: 22.99,
     cover: 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop',
+    gallery: [
+      'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=400&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=400&h=600&fit=crop',
+    ],
     rating: 4.7, reviewCount: 891, genres: ['Fiction', 'Mystery'],
     formats: ['Hardcover', 'Paperback', 'eBook'],
     description: 'For years, rumors of the "Marsh Girl" haunted Barkley Cove, a quiet town on the North Carolina coast.',
