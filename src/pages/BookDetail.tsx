@@ -9,8 +9,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FormatSelector } from '@/components/product/FormatSelector';
 import { PriceDisplay } from '@/components/product/PriceDisplay';
 import { BookGrid } from '@/components/product/BookGrid';
+import { ImageGallery } from '@/components/product/ImageGallery';
+import { ReviewForm } from '@/components/product/ReviewForm';
 import { cn } from '@/lib/utils';
-import type { BookFormat } from '@/lib/types';
+import type { BookFormat, Review } from '@/lib/types';
 import { toast } from 'sonner';
 
 export default function BookDetail() {
@@ -18,6 +20,7 @@ export default function BookDetail() {
   const book = BOOKS.find((b) => b.slug === slug);
   const addItem = useCart((s) => s.addItem);
   const [selectedFormat, setSelectedFormat] = useState<BookFormat>(book?.formats[0] || 'Paperback');
+  const [reviews, setReviews] = useState<Review[]>(MOCK_REVIEWS);
 
   if (!book) {
     return (
@@ -30,12 +33,24 @@ export default function BookDetail() {
     );
   }
 
+  const galleryImages = book.gallery?.length
+    ? book.gallery
+    : [book.cover];
+
   const related = BOOKS.filter((b) => b.id !== book.id && b.genres.some((g) => book.genres.includes(g))).slice(0, 4);
 
   const handleAddToCart = () => {
     addItem(book, selectedFormat);
     toast.success(`Added "${book.title}" to cart`, { description: `Format: ${selectedFormat}` });
   };
+
+  const handleReviewSubmit = (review: Review) => {
+    setReviews((prev) => [review, ...prev]);
+  };
+
+  const avgRating = reviews.length
+    ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+    : book.rating.toFixed(1);
 
   return (
     <main className="container mx-auto px-4 py-12">
@@ -49,19 +64,13 @@ export default function BookDetail() {
       </div>
 
       <div className="grid md:grid-cols-2 gap-12 lg:gap-16 items-start">
-        {/* Cover */}
+        {/* Gallery */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           className="sticky top-24"
         >
-          <div className="aspect-[3/4] rounded-2xl overflow-hidden bg-muted shadow-warm group">
-            <img
-              src={book.cover}
-              alt={book.title}
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-          </div>
+          <ImageGallery images={galleryImages} alt={book.title} />
         </motion.div>
 
         {/* Content */}
@@ -82,10 +91,11 @@ export default function BookDetail() {
             <div className="flex items-center gap-2">
               <div className="flex gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className={cn('h-4 w-4', i < Math.floor(book.rating) ? 'fill-current text-amber-glow' : 'text-muted')} />
+                  <Star key={i} className={cn('h-4 w-4', i < Math.floor(Number(avgRating)) ? 'fill-current text-amber-glow' : 'text-muted')} />
                 ))}
               </div>
-              <span className="text-sm text-muted-foreground">({book.reviewCount} reviews)</span>
+              <span className="text-sm font-medium">{avgRating}</span>
+              <span className="text-sm text-muted-foreground">({reviews.length} reviews)</span>
             </div>
           </div>
 
@@ -129,7 +139,7 @@ export default function BookDetail() {
                   value={tab}
                   className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-0 py-3 text-sm font-bold uppercase tracking-widest"
                 >
-                  {tab === 'reviews' ? `Reviews (${MOCK_REVIEWS.length})` : tab}
+                  {tab === 'reviews' ? `Reviews (${reviews.length})` : tab}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -151,21 +161,27 @@ export default function BookDetail() {
                 ))}
               </dl>
             </TabsContent>
-            <TabsContent value="reviews" className="pt-6 space-y-6">
-              {MOCK_REVIEWS.map((review) => (
-                <div key={review.id} className="space-y-2 pb-6 border-b last:border-0">
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold text-sm">{review.name}</span>
-                    <span className="text-xs text-muted-foreground">{review.date}</span>
+            <TabsContent value="reviews" className="pt-6 space-y-8">
+              {/* Add review form */}
+              <ReviewForm onSubmit={handleReviewSubmit} />
+
+              {/* Existing reviews */}
+              <div className="space-y-6">
+                {reviews.map((review) => (
+                  <div key={review.id} className="space-y-2 pb-6 border-b last:border-0">
+                    <div className="flex items-center justify-between">
+                      <span className="font-semibold text-sm">{review.name}</span>
+                      <span className="text-xs text-muted-foreground">{review.date}</span>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {Array.from({ length: review.rating }).map((_, i) => (
+                        <Star key={i} className="h-3 w-3 fill-current text-amber-glow" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground">{review.text}</p>
                   </div>
-                  <div className="flex gap-0.5">
-                    {Array.from({ length: review.rating }).map((_, i) => (
-                      <Star key={i} className="h-3 w-3 fill-current text-amber-glow" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-muted-foreground">{review.text}</p>
-                </div>
-              ))}
+                ))}
+              </div>
             </TabsContent>
           </Tabs>
         </motion.div>
