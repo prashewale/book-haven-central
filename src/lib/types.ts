@@ -8,6 +8,7 @@ export interface Book {
   price: number;
   discountPrice?: number;
   cover: string;
+  gallery?: string[];
   rating: number;
   reviewCount: number;
   genres: string[];
