@@ -1,20 +1,27 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, X, User } from 'lucide-react';
+import { Search, ShoppingBag, Menu, User, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/lib/store';
 import { MiniCart } from '@/components/cart/MiniCart';
 import { MobileNav } from './MobileNav';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { GENRES } from '@/lib/mock-data';
 
-const NAV_LINKS = [
-  { label: 'Home', to: '/' },
-  { label: 'Books', to: '/books' },
-  { label: 'New Releases', to: '/books?filter=new' },
-  { label: 'Bestsellers', to: '/books?filter=bestseller' },
+const GENRE_GROUPS = [
+  { label: 'Popular', genres: ['Fiction', 'Non-Fiction', 'Romance', 'Mystery'] },
+  { label: 'Speculative', genres: ['Fantasy', 'Sci-Fi', 'Thriller'] },
+  { label: 'More', genres: ['Historical', 'Self-Help', 'Memoir', 'Biography', 'Classic'] },
 ];
 
 export default function Header() {
-  const [searchOpen, setSearchOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
@@ -26,7 +33,6 @@ export default function Header() {
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
-      setSearchOpen(false);
     }
   };
 
@@ -50,45 +56,114 @@ export default function Header() {
             </span>
           </Link>
 
-          {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </Link>
-            ))}
-          </nav>
+          {/* Desktop nav with hover dropdowns */}
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/"
+                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Home
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-foreground">
+                  Books
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="w-[480px] p-6">
+                    <div className="mb-4">
+                      <Link
+                        to="/books"
+                        className="block text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                      >
+                        Browse All Books →
+                      </Link>
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                      {GENRE_GROUPS.map((group) => (
+                        <div key={group.label}>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                            {group.label}
+                          </p>
+                          <ul className="space-y-1.5">
+                            {group.genres.map((genre) => (
+                              <li key={genre}>
+                                <Link
+                                  to={`/books?genre=${encodeURIComponent(genre)}`}
+                                  className="block text-sm text-foreground/80 hover:text-primary transition-colors"
+                                >
+                                  {genre}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-foreground">
+                  Collections
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <div className="w-[320px] p-4 space-y-1">
+                    <Link
+                      to="/books?filter=new"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      🆕 New Releases
+                    </Link>
+                    <Link
+                      to="/books?filter=bestseller"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      🏆 Bestsellers
+                    </Link>
+                    <Link
+                      to="/books?filter=sale"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      🔥 On Sale
+                    </Link>
+                    <Link
+                      to="/search"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
+                      🔍 Advanced Search
+                    </Link>
+                  </div>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            {/* Search toggle */}
-            {searchOpen ? (
-              <form onSubmit={handleSearch} className="hidden md:flex items-center gap-2">
+            {/* Search */}
+            <form onSubmit={handleSearch} className="hidden md:flex items-center">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search books..."
-                  autoFocus
-                  className="h-9 w-48 rounded-lg border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+                  className="h-9 w-48 rounded-full border bg-muted/50 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/20 focus:bg-background transition-all"
                 />
-                <button type="button" onClick={() => setSearchOpen(false)} className="p-2 text-muted-foreground">
-                  <X className="h-4 w-4" />
-                </button>
-              </form>
-            ) : (
-              <button onClick={() => setSearchOpen(true)} className="p-2 text-muted-foreground hover:text-foreground transition-colors" aria-label="Search">
-                <Search className="h-5 w-5" />
-              </button>
-            )}
+              </div>
+            </form>
 
-            <button className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden md:flex" aria-label="Account">
+            <Link to="/login" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden md:flex" aria-label="Account">
               <User className="h-5 w-5" />
-            </button>
+            </Link>
 
             {/* Cart */}
             <button
@@ -105,23 +180,6 @@ export default function Header() {
             </button>
           </div>
         </div>
-
-        {/* Mobile search */}
-        {searchOpen && (
-          <div className="md:hidden border-t p-3">
-            <form onSubmit={handleSearch} className="flex gap-2">
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search books..."
-                autoFocus
-                className="flex-1 h-10 rounded-lg border bg-background px-3 text-sm outline-none"
-              />
-              <Button type="submit" size="sm">Search</Button>
-            </form>
-          </div>
-        )}
       </header>
 
       <MiniCart />
