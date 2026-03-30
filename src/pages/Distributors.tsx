@@ -20,7 +20,7 @@ export default function Distributors() {
 
   const handleInquiry = (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success('Distributor inquiry submitted! We'll get back to you soon. (Demo)');
+    toast.success('Distributor inquiry submitted! We will get back to you soon. (Demo)');
     setName(''); setEmail(''); setCompanyName('');
   };
 

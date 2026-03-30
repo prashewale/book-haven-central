@@ -10,7 +10,7 @@ const EVENTS = [
     date: 'Apr 15, 2026',
     time: '6:00 PM – 8:00 PM',
     location: 'Mehta Publishing House, Main Hall',
-    description: 'Join us for the launch of our newest fiction release. Meet the author, get signed copies, and enjoy refreshments.',
+    description: 'Join us for the launch of our newest fiction release. Meet the author and get signed copies.',
     spots: 50,
     image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=600&h=300&fit=crop',
     type: 'Book Launch',
