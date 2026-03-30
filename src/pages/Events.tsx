@@ -17,7 +17,7 @@ const EVENTS = [
   },
   {
     id: 'e2',
-    title: 'Children's Reading Hour',
+    title: "Children's Reading Hour",
     date: 'Apr 20, 2026',
     time: '10:00 AM – 11:30 AM',
     location: 'Mehta Publishing House, Kids Corner',
