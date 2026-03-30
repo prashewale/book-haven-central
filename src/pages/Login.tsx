@@ -32,7 +32,7 @@ export default function Login() {
       >
         <div className="text-center space-y-2">
           <h1 className="text-3xl md:text-4xl font-serif font-bold">Welcome Back</h1>
-          <p className="text-muted-foreground">Sign in to your BookHaven account</p>
+          <p className="text-muted-foreground">Sign in to your Mehta Publishing House account</p>
         </div>
 
         <div className="bg-card rounded-2xl p-8 shadow-soft border border-border">

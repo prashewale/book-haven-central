@@ -32,7 +32,7 @@ export default function Signup() {
       >
         <div className="text-center space-y-2">
           <h1 className="text-3xl md:text-4xl font-serif font-bold">Create Account</h1>
-          <p className="text-muted-foreground">Join BookHaven and start your reading journey</p>
+          <p className="text-muted-foreground">Join Mehta Publishing House and start your reading journey</p>
         </div>
 
         <div className="bg-card rounded-2xl p-8 shadow-soft border border-border">

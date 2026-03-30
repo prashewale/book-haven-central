@@ -6,7 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 
 const SLIDES = [
   {
-    subtitle: 'Welcome to BookHaven',
+    subtitle: 'Welcome to Mehta Publishing House',
     title: 'Discover Your Next',
     highlight: 'Favorite',
     titleEnd: 'Read',

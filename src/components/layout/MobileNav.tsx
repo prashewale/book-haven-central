@@ -10,8 +10,14 @@ interface MobileNavProps {
 const NAV_LINKS = [
   { label: 'Home', to: '/' },
   { label: 'All Books', to: '/books' },
-  { label: 'New Releases', to: '/books?filter=new' },
-  { label: 'Bestsellers', to: '/books?filter=bestseller' },
+  { label: 'Authors', to: '/authors' },
+  { label: 'Combo Sets', to: '/combo-sets' },
+  { label: 'Discounts', to: '/discounts' },
+  { label: 'Gift Coupons', to: '/gift-coupons' },
+  { label: 'Membership', to: '/membership' },
+  { label: 'Events', to: '/events' },
+  { label: 'Distributors', to: '/distributors' },
+  { label: 'Publish eBook', to: '/publish' },
   { label: 'Cart', to: '/cart' },
 ];
 
@@ -35,12 +41,12 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             className="fixed left-0 top-0 bottom-0 z-50 w-72 bg-background border-r shadow-warm"
           >
             <div className="flex items-center justify-between p-4 border-b">
-              <span className="font-serif text-xl font-bold">BookHaven</span>
+              <span className="font-serif text-xl font-bold">Mehta Publishing</span>
               <button onClick={onClose} className="p-2 text-muted-foreground">
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <nav className="p-4 space-y-1">
+            <nav className="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-65px)]">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.to}

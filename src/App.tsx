@@ -11,6 +11,14 @@ import Cart from "@/pages/Cart";
 import SearchPage from "@/pages/Search";
 import Login from "@/pages/Login";
 import Signup from "@/pages/Signup";
+import Authors from "@/pages/Authors";
+import ComboSets from "@/pages/ComboSets";
+import GiftCoupons from "@/pages/GiftCoupons";
+import Discounts from "@/pages/Discounts";
+import Membership from "@/pages/Membership";
+import Events from "@/pages/Events";
+import Distributors from "@/pages/Distributors";
+import PublishEbook from "@/pages/PublishEbook";
 import NotFound from "@/pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +39,14 @@ const App = () => (
               <Route path="/search" element={<SearchPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
+              <Route path="/authors" element={<Authors />} />
+              <Route path="/combo-sets" element={<ComboSets />} />
+              <Route path="/gift-coupons" element={<GiftCoupons />} />
+              <Route path="/discounts" element={<Discounts />} />
+              <Route path="/membership" element={<Membership />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/distributors" element={<Distributors />} />
+              <Route path="/publish" element={<PublishEbook />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

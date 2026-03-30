@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="space-y-4">
             <Link to="/" className="flex items-center gap-2">
               <BookOpen className="h-6 w-6 text-primary" />
-              <span className="font-serif text-xl font-bold">BookHaven</span>
+              <span className="font-serif text-xl font-bold">Mehta Publishing</span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Your destination for curated reads, new releases, and timeless classics.
@@ -25,28 +25,60 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          {[
-            { title: 'Shop', links: ['All Books', 'New Releases', 'Bestsellers', 'On Sale', 'Gift Cards'] },
-            { title: 'About', links: ['Our Story', 'Blog', 'Careers', 'Press'] },
-            { title: 'Help', links: ['FAQ', 'Shipping', 'Returns', 'Contact Us'] },
-          ].map((section) => (
-            <div key={section.title} className="space-y-4">
-              <h4 className="font-serif text-lg font-semibold">{section.title}</h4>
-              <ul className="space-y-2.5">
-                {section.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <div className="space-y-4">
+            <h4 className="font-serif text-lg font-semibold">Shop</h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: 'All Books', to: '/books' },
+                { label: 'Combo Sets', to: '/combo-sets' },
+                { label: 'Discounts', to: '/discounts' },
+                { label: 'Gift Coupons', to: '/gift-coupons' },
+                { label: 'New Releases', to: '/books?filter=new' },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-serif text-lg font-semibold">Company</h4>
+            <ul className="space-y-2.5">
+              {[
+                { label: 'Authors', to: '/authors' },
+                { label: 'Events', to: '/events' },
+                { label: 'Distributors', to: '/distributors' },
+                { label: 'Membership', to: '/membership' },
+                { label: 'Publish eBook', to: '/publish' },
+              ].map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h4 className="font-serif text-lg font-semibold">Help</h4>
+            <ul className="space-y-2.5">
+              {['FAQ', 'Shipping', 'Returns', 'Contact Us'].map((link) => (
+                <li key={link}>
+                  <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                    {link}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className="mt-16 pt-8 border-t text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} BookHaven. All rights reserved.
+          &copy; {new Date().getFullYear()} Mehta Publishing House. All rights reserved.
         </div>
       </div>
     </footer>
