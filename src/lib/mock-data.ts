@@ -226,7 +226,7 @@ export const GENRES = [
 
 export const TESTIMONIALS = [
   {
-    id: '1', name: 'Sarah M.', text: 'BookHaven has completely changed how I discover new reads. The curated collections are absolutely wonderful!', rating: 5,
+    id: '1', name: 'Sarah M.', text: 'Mehta Publishing House has completely changed how I discover new reads. The curated collections are absolutely wonderful!', rating: 5,
   },
   {
     id: '2', name: 'James T.', text: 'Fast shipping, beautiful packaging, and the best prices I\'ve found online. My go-to bookstore.', rating: 5,
