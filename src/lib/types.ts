@@ -1,4 +1,4 @@
-export type BookFormat = 'Hardcover' | 'Paperback' | 'eBook' | 'Audiobook';
+export type BookFormat = "Hardcover" | "Paperback" | "eBook" | "Audiobook";
 
 export interface Book {
   id: string;
@@ -15,7 +15,7 @@ export interface Book {
   formats: BookFormat[];
   description: string;
   pages: number;
-  publisher: string;
+  publisher?: string;
   isbn: string;
   pubDate: string;
   isBestseller?: boolean;

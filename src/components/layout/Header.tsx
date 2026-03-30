@@ -1,10 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { Search, ShoppingBag, Menu, User } from 'lucide-react';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { useCart } from '@/lib/store';
-import { MiniCart } from '@/components/cart/MiniCart';
-import { MobileNav } from './MobileNav';
+import { Link, useNavigate } from "react-router-dom";
+import { Search, ShoppingBag, Menu, User } from "lucide-react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useCart } from "@/lib/store";
+import { MiniCart } from "@/components/cart/MiniCart";
+import { MobileNav } from "./MobileNav";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -12,18 +12,24 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { GENRES } from '@/lib/mock-data';
+} from "@/components/ui/navigation-menu";
+import { GENRES } from "@/lib/mock-data";
 
 const GENRE_GROUPS = [
-  { label: 'Popular', genres: ['Fiction', 'Non-Fiction', 'Romance', 'Mystery'] },
-  { label: 'Speculative', genres: ['Fantasy', 'Sci-Fi', 'Thriller'] },
-  { label: 'More', genres: ['Historical', 'Self-Help', 'Memoir', 'Biography', 'Classic'] },
+  {
+    label: "Popular",
+    genres: ["Fiction", "Non-Fiction", "Romance", "Mystery"],
+  },
+  { label: "Speculative", genres: ["Fantasy", "Sci-Fi", "Thriller"] },
+  {
+    label: "More",
+    genres: ["Historical", "Self-Help", "Memoir", "Biography", "Classic"],
+  },
 ];
 
 export default function Header() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const totalItems = useCart((s) => s.totalItems());
   const setCartOpen = useCart((s) => s.setCartOpen);
@@ -32,7 +38,7 @@ export default function Header() {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+      setSearchQuery("");
     }
   };
 
@@ -51,8 +57,11 @@ export default function Header() {
 
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-serif text-xl lg:text-2xl font-bold tracking-tight text-foreground">
-              Mehta<span className="text-primary"> Publishing</span>
+            <span className="flex gap-2 justify-between items-center font-serif text-xl lg:text-2xl font-bold tracking-tight text-foreground">
+              <span>
+                <img src="/images/logo.png" alt="" className="h-8 w-8" />
+              </span>
+              Mehta Publishing House
             </span>
           </Link>
 
@@ -77,18 +86,26 @@ export default function Header() {
                 <NavigationMenuContent>
                   <div className="w-[480px] p-6">
                     <div className="mb-4">
-                      <Link to="/books" className="block text-sm font-semibold text-foreground hover:text-primary transition-colors">
+                      <Link
+                        to="/books"
+                        className="block text-sm font-semibold text-foreground hover:text-primary transition-colors"
+                      >
                         Browse All Books →
                       </Link>
                     </div>
                     <div className="grid grid-cols-3 gap-4">
                       {GENRE_GROUPS.map((group) => (
                         <div key={group.label}>
-                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{group.label}</p>
+                          <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                            {group.label}
+                          </p>
                           <ul className="space-y-1.5">
                             {group.genres.map((genre) => (
                               <li key={genre}>
-                                <Link to={`/books?genre=${encodeURIComponent(genre)}`} className="block text-sm text-foreground/80 hover:text-primary transition-colors">
+                                <Link
+                                  to={`/books?genre=${encodeURIComponent(genre)}`}
+                                  className="block text-sm text-foreground/80 hover:text-primary transition-colors"
+                                >
                                   {genre}
                                 </Link>
                               </li>
@@ -107,19 +124,34 @@ export default function Header() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[320px] p-4 space-y-1">
-                    <Link to="/combo-sets" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/combo-sets"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       📦 Combo Sets
                     </Link>
-                    <Link to="/discounts" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/discounts"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       🔥 Discounts & Deals
                     </Link>
-                    <Link to="/gift-coupons" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/gift-coupons"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       🎁 Gift Coupons
                     </Link>
-                    <Link to="/books?filter=new" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/books?filter=new"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       🆕 New Releases
                     </Link>
-                    <Link to="/books?filter=bestseller" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/books?filter=bestseller"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       🏆 Bestsellers
                     </Link>
                   </div>
@@ -132,19 +164,34 @@ export default function Header() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <div className="w-[320px] p-4 space-y-1">
-                    <Link to="/authors" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/authors"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       ✍️ Authors
                     </Link>
-                    <Link to="/membership" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/membership"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       👑 Membership
                     </Link>
-                    <Link to="/events" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/events"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       📅 Events
                     </Link>
-                    <Link to="/distributors" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/distributors"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       🚚 Distributors
                     </Link>
-                    <Link to="/publish" className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors">
+                    <Link
+                      to="/publish"
+                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
+                    >
                       📝 Publish eBook
                     </Link>
                   </div>
@@ -155,7 +202,10 @@ export default function Header() {
 
           {/* Actions */}
           <div className="flex items-center gap-2">
-            <form onSubmit={handleSearch} className="hidden md:flex items-center">
+            <form
+              onSubmit={handleSearch}
+              className="hidden md:flex items-center"
+            >
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <input
@@ -168,7 +218,11 @@ export default function Header() {
               </div>
             </form>
 
-            <Link to="/login" className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden md:flex" aria-label="Account">
+            <Link
+              to="/login"
+              className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden md:flex"
+              aria-label="Account"
+            >
               <User className="h-5 w-5" />
             </Link>
 

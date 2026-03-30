@@ -10,7 +10,7 @@
     --card-foreground: 20 10% 12%;
     --popover: 30 20% 98%;
     --popover-foreground: 20 10% 12%;
-    --primary: 25 65% 40%;
+    --primary: 86 100% 34%;
     --primary-foreground: 30 20% 98%;
     --secondary: 30 10% 90%;
     --secondary-foreground: 20 10% 20%;
@@ -79,11 +79,15 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: "Inter", system-ui, sans-serif;
   }
 
-  h1, h2, h3, h4, .serif {
-    font-family: 'Playfair Display', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  .serif {
+    font-family: "Playfair Display", serif;
     @apply tracking-tight;
   }
 
@@ -94,14 +98,16 @@
 
 @layer utilities {
   .shadow-soft {
-    box-shadow: 0 0 0 1px rgba(42, 26, 18, 0.03),
-                0 2px 4px rgba(42, 26, 18, 0.05),
-                0 12px 24px -12px rgba(42, 26, 18, 0.05);
+    box-shadow:
+      0 0 0 1px rgba(42, 26, 18, 0.03),
+      0 2px 4px rgba(42, 26, 18, 0.05),
+      0 12px 24px -12px rgba(42, 26, 18, 0.05);
   }
 
   .shadow-warm {
-    box-shadow: 0 4px 16px -4px rgba(42, 26, 18, 0.1),
-                0 8px 32px -8px rgba(42, 26, 18, 0.08);
+    box-shadow:
+      0 4px 16px -4px rgba(42, 26, 18, 0.1),
+      0 8px 32px -8px rgba(42, 26, 18, 0.08);
   }
 
   .text-balance {
