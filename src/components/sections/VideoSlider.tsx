@@ -2,10 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Play } from "lucide-react";
 
-// ─── Converts any YouTube URL to an embeddable iframe src ─────────────────────
-// Supports: watch?v=, /live/, youtu.be/, /shorts/
-// YouTube iframes require the /embed/ format — other URL formats are blocked by browsers.
-// You just paste any YouTube URL in the VIDEOS array; this handles the conversion.
+// YouTube URL to Embed Converter (unchanged - works great)
 function toEmbedUrl(url: string): string {
   const patterns: [RegExp, (m: RegExpMatchArray) => string][] = [
     [/youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]{11})/, (m) => m[1]],
@@ -16,15 +13,11 @@ function toEmbedUrl(url: string): string {
   for (const [pattern, extract] of patterns) {
     const match = url.match(pattern);
     if (match)
-      return `https://www.youtube.com/embed/${extract(match)}?autoplay=1&rel=0`;
+      return `https://www.youtube.com/embed/${extract(match)}?autoplay=1&rel=0&modestbranding=1`;
   }
-  return url; // fallback: return as-is
+  return url;
 }
 
-// ─── Video Data ───────────────────────────────────────────────────────────────
-// `url`    → paste any YouTube URL (watch, live, youtu.be, shorts — all work)
-// `poster` → image shown before the user hits play (book cover, banner, etc.)
-// `title`  → shown in the overlay on the poster and below the player
 const VIDEOS = [
   {
     url: "https://www.youtube.com/watch?v=446UHtwcTHw",
@@ -65,42 +58,47 @@ export function VideoSlider() {
     setCurrent(index);
   };
 
-  // Auto-advance every 8s when not actively playing
+  // Auto-advance
   useEffect(() => {
     if (isPlaying) return;
-    const timer = setInterval(next, 8000);
+    const timer = setInterval(next, 7000);
     return () => clearInterval(timer);
   }, [next, isPlaying]);
 
   const video = VIDEOS[current];
 
   return (
-    <section className="py-16 bg-accent/30">
+    <section className="py-20 bg-[hsl(var(--warm-paper))]">
       <div className="container mx-auto px-4">
-        {/* Section Header — matches Hero.tsx style */}
-        <div className="text-center mb-10">
-          <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-2">
-            Watch &amp; Discover
-          </p>
-          <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground">
+        {/* Attractive Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white rounded-full shadow-sm mb-4">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            <p className="text-sm font-medium tracking-widest text-[hsl(var(--sienna))]">
+              VIDEO SERIES
+            </p>
+          </div>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-[hsl(var(--deep-brown))] tracking-tight">
             Featured Videos
           </h2>
+          <p className="mt-4 text-lg text-muted-foreground max-w-md mx-auto">
+            Watch exclusive reviews, events, and author interviews
+          </p>
         </div>
 
-        {/* Slider wrapper */}
-        <div className="relative max-w-4xl mx-auto">
-          {/* Video card */}
+        {/* Larger Video Container */}
+        <div className="relative max-w-5xl mx-auto">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="rounded-2xl overflow-hidden shadow-warm bg-black"
+              initial={{ opacity: 0, scale: 0.96, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: -30 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="rounded-3xl overflow-hidden shadow-2xl bg-black relative"
             >
               {isPlaying ? (
-                /* ── Embedded YouTube player ── */
+                /* YouTube Player - Larger */
                 <iframe
                   className="w-full aspect-video"
                   src={toEmbedUrl(video.url)}
@@ -109,108 +107,96 @@ export function VideoSlider() {
                   allowFullScreen
                 />
               ) : (
-                /* ── Poster image with play button ── */
+                /* Enhanced Poster with Bigger Play Button */
                 <div
                   className="relative w-full aspect-video cursor-pointer group"
                   onClick={() => setIsPlaying(true)}
                   role="button"
-                  aria-label={`Play: ${video.title}`}
+                  aria-label={`Play ${video.title}`}
                 >
-                  {/* Poster image */}
                   <img
                     src={video.poster}
                     alt={video.title}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                   />
 
-                  {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent group-hover:from-black/40 transition-all duration-300" />
+                  {/* Darker cinematic overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:from-black/60 transition-all duration-500" />
 
-                  {/* Play button */}
+                  {/* Large Glowing Play Button */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <motion.div
-                      whileHover={{ scale: 1.12 }}
-                      whileTap={{ scale: 0.96 }}
-                      className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-warm"
+                      whileHover={{ scale: 1.15 }}
+                      whileTap={{ scale: 0.92 }}
+                      className="w-24 h-24 rounded-full bg-white/95 backdrop-blur-md flex items-center justify-center shadow-2xl border border-white/50 ring-8 ring-white/20 group-hover:ring-[hsl(var(--sienna))]/30 transition-all"
                     >
-                      <Play className="w-8 h-8 text-primary fill-primary ml-1" />
+                      <Play className="w-12 h-12 text-[hsl(var(--sienna))] fill-current ml-1" />
                     </motion.div>
                   </div>
 
-                  {/* Title overlay at bottom of poster */}
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <h3 className="text-white text-lg font-serif font-bold leading-tight line-clamp-1">
+                  {/* Title Overlay - Bigger & Elegant */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-8">
+                    <h3 className="text-white text-2xl md:text-3xl font-serif font-semibold leading-tight drop-shadow-md">
                       {video.title}
                     </h3>
+                  </div>
+
+                  {/* Subtle badge */}
+                  <div className="absolute top-6 right-6 px-4 py-1 bg-black/60 text-white text-xs font-medium rounded-full backdrop-blur-sm">
+                    Watch Now
                   </div>
                 </div>
               )}
             </motion.div>
           </AnimatePresence>
 
-          {/* Side prev/next buttons — matches Hero.tsx style */}
+          {/* Navigation Arrows - Larger & More Visible */}
           <button
             onClick={prev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-5 p-2 rounded-full border border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground transition-colors shadow-soft z-10"
+            className="absolute -left-5 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-white shadow-warm border border-border hover:border-[hsl(var(--sienna))] hover:text-[hsl(var(--sienna))] transition-all z-20"
             aria-label="Previous video"
           >
-            <ChevronLeft className="h-5 w-5" />
+            <ChevronLeft className="h-6 w-6" />
           </button>
+
           <button
             onClick={next}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-5 p-2 rounded-full border border-border bg-background text-muted-foreground hover:text-foreground hover:border-foreground transition-colors shadow-soft z-10"
+            className="absolute -right-5 top-1/2 -translate-y-1/2 p-4 rounded-2xl bg-white shadow-warm border border-border hover:border-[hsl(var(--sienna))] hover:text-[hsl(var(--sienna))] transition-all z-20"
             aria-label="Next video"
           >
-            <ChevronRight className="h-5 w-5" />
+            <ChevronRight className="h-6 w-6" />
           </button>
         </div>
 
-        {/* Title below player */}
+        {/* Title Below (Bigger) */}
         <AnimatePresence mode="wait">
           <motion.div
             key={current}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-center mt-5"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="text-center mt-8"
           >
-            <h3 className="text-xl font-serif font-semibold text-foreground">
+            <h3 className="text-2xl font-serif font-semibold text-[hsl(var(--deep-brown))]">
               {video.title}
             </h3>
           </motion.div>
         </AnimatePresence>
 
-        {/* Dot indicators + arrows — matches Hero.tsx pattern exactly */}
-        <div className="flex items-center justify-center gap-4 mt-6">
-          <button
-            onClick={prev}
-            className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
-            aria-label="Previous video"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
-          <div className="flex gap-2">
-            {VIDEOS.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "w-8 bg-primary"
-                    : "w-2 bg-border hover:bg-muted-foreground"
-                }`}
-                aria-label={`Go to video ${i + 1}`}
-              />
-            ))}
-          </div>
-          <button
-            onClick={next}
-            className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
-            aria-label="Next video"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+        {/* Dot Indicators */}
+        <div className="flex justify-center gap-3 mt-10">
+          {VIDEOS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className={`h-3 rounded-full transition-all duration-300 ${
+                i === current
+                  ? "w-10 bg-[hsl(var(--sienna))]"
+                  : "w-3 bg-border hover:bg-muted-foreground"
+              }`}
+              aria-label={`Go to video ${i + 1}`}
+            />
+          ))}
         </div>
       </div>
     </section>

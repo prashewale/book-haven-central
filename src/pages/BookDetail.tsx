@@ -20,6 +20,9 @@ import {
   MessageSquare,
   ZoomIn,
   X,
+  Building2,
+  ListCollapse,
+  UserRound,
 } from "lucide-react";
 import { useState, useRef } from "react";
 import { BOOKS, MOCK_REVIEWS } from "@/lib/mock-data";
@@ -33,10 +36,11 @@ import { ReviewForm } from "@/components/product/ReviewForm";
 import { cn } from "@/lib/utils";
 import type { BookFormat, Review } from "@/lib/types";
 import { toast } from "sonner";
+import { BuyingOptions } from "@/components/product/BuyingOptions";
 
-// ── Rating breakdown (mock distribution) ─────────────────────────────────────
+// ── Rating breakdown ──────────────────────────────────────────────────────────
 function getRatingBreakdown(reviews: Review[]) {
-  const counts = [0, 0, 0, 0, 0]; // index 0 = 1 star … index 4 = 5 stars
+  const counts = [0, 0, 0, 0, 0];
   reviews.forEach((r) => {
     if (r.rating >= 1 && r.rating <= 5) counts[r.rating - 1]++;
   });
@@ -91,7 +95,7 @@ function ZoomModal({
   );
 }
 
-// ── Star row ─────────────────────────────────────────────────────────────────
+// ── Stars ─────────────────────────────────────────────────────────────────────
 function Stars({
   rating,
   size = "sm",
@@ -118,7 +122,7 @@ function Stars({
   );
 }
 
-// ── Interactive review helpful votes ─────────────────────────────────────────
+// ── Review Card ───────────────────────────────────────────────────────────────
 function ReviewCard({ review }: { review: Review }) {
   const [helpful, setHelpful] = useState<null | "yes" | "no">(null);
   const [helpCount, setHelpCount] = useState(Math.floor(Math.random() * 20));
@@ -128,7 +132,6 @@ function ReviewCard({ review }: { review: Review }) {
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
-            {/* Avatar circle */}
             <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
               {review.name.charAt(0).toUpperCase()}
             </div>
@@ -146,12 +149,9 @@ function ReviewCard({ review }: { review: Review }) {
           {review.date}
         </span>
       </div>
-
       <p className="text-sm text-muted-foreground leading-relaxed">
         {review.text}
       </p>
-
-      {/* Helpful votes */}
       <div className="flex items-center gap-3 pt-1">
         <span className="text-xs text-muted-foreground">
           Helpful? ({helpCount})
@@ -174,9 +174,7 @@ function ReviewCard({ review }: { review: Review }) {
         </button>
         <button
           onClick={() => {
-            if (helpful !== "no") {
-              setHelpful("no");
-            }
+            if (helpful !== "no") setHelpful("no");
           }}
           className={cn(
             "flex items-center gap-1 text-xs px-2 py-1 rounded-full border transition-colors",
@@ -188,6 +186,99 @@ function ReviewCard({ review }: { review: Review }) {
           <ThumbsDown className="h-3 w-3" /> No
         </button>
       </div>
+    </div>
+  );
+}
+
+// ── Accordion Panel ───────────────────────────────────────────────────────────
+function AccordionPanel({
+  id,
+  icon: Icon,
+  title,
+  openId,
+  setOpenId,
+  children,
+}: {
+  id: string;
+  icon: React.ElementType;
+  title: string;
+  openId: string | null;
+  setOpenId: (id: string | null) => void;
+  children: React.ReactNode;
+}) {
+  const isOpen = openId === id;
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border transition-colors duration-200",
+        isOpen
+          ? "border-primary/30 bg-primary/[0.02]"
+          : "border-border bg-card",
+      )}
+    >
+      <button
+        onClick={() => setOpenId(isOpen ? null : id)}
+        className="flex w-full items-center gap-3 px-5 py-4 text-left"
+      >
+        <div
+          className={cn(
+            "flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors duration-200",
+            isOpen
+              ? "bg-primary/10 text-primary"
+              : "bg-accent/60 text-muted-foreground",
+          )}
+        >
+          <Icon className="h-4 w-4" />
+        </div>
+        <span
+          className={cn(
+            "flex-1 font-semibold text-sm transition-colors",
+            isOpen ? "text-foreground" : "text-foreground/80",
+          )}
+        >
+          {title}
+        </span>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          <ChevronDown
+            className={cn(
+              "h-4 w-4 transition-colors",
+              isOpen ? "text-primary" : "text-muted-foreground",
+            )}
+          />
+        </motion.div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 pt-1 border-t border-border/50">
+              {children}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ── Detail Row (for Book Details table) ──────────────────────────────────────
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-start gap-4 py-2.5 border-b border-border/60 last:border-0">
+      <dt className="w-36 shrink-0 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground pt-0.5">
+        {label}
+      </dt>
+      <dd className="text-sm text-foreground">{value}</dd>
     </div>
   );
 }
@@ -210,6 +301,10 @@ export default function BookDetail() {
     "description" | "details" | "reviews"
   >("description");
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
+  // Accordion: one open at a time; default open = publisher
+  const [openAccordion, setOpenAccordion] = useState<string | null>(
+    "publisher",
+  );
   const reviewsRef = useRef<HTMLDivElement>(null);
 
   if (!book) {
@@ -243,12 +338,10 @@ export default function BookDetail() {
       description: `Format: ${selectedFormat}`,
     });
   };
-
   const handleBuyNow = () => {
     addItem(book, selectedFormat);
     toast.success("Proceeding to checkout…");
   };
-
   const handleShare = async () => {
     try {
       await navigator.share({ title: book.title, url: window.location.href });
@@ -257,7 +350,6 @@ export default function BookDetail() {
       toast.success("Link copied to clipboard!");
     }
   };
-
   const scrollToReviews = () => {
     setActiveTab("reviews");
     setTimeout(
@@ -296,7 +388,6 @@ export default function BookDetail() {
             animate={{ opacity: 1, x: 0 }}
             className="sticky top-24 w-full lg:w-[340px]"
           >
-            {/* Main image */}
             <div
               className="relative rounded-2xl overflow-hidden bg-accent/30 aspect-[3/4] group cursor-zoom-in shadow-warm"
               onClick={() => setZoomSrc(galleryImages[activeImage])}
@@ -332,7 +423,6 @@ export default function BookDetail() {
               )}
             </div>
 
-            {/* Thumbnail strip */}
             {galleryImages.length > 1 && (
               <div className="flex gap-2 mt-3 flex-wrap">
                 {galleryImages.map((img, i) => (
@@ -356,7 +446,6 @@ export default function BookDetail() {
               </div>
             )}
 
-            {/* Delivery info card */}
             <div className="mt-4 rounded-xl border bg-card p-4 space-y-3 text-sm">
               <div className="flex items-start gap-3">
                 <Truck className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
@@ -388,7 +477,7 @@ export default function BookDetail() {
             </div>
           </motion.div>
 
-          {/* ── Col 2: Book info + tabs ── */}
+          {/* ── Col 2: Book info + tabs + accordion ── */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -430,7 +519,7 @@ export default function BookDetail() {
               )}
             </div>
 
-            {/* Rating summary — clicking scrolls to reviews */}
+            {/* Rating */}
             <button
               onClick={scrollToReviews}
               className="flex items-center gap-2 group hover:opacity-80 transition-opacity text-left"
@@ -442,7 +531,7 @@ export default function BookDetail() {
               </span>
             </button>
 
-            {/* Description with expand/collapse */}
+            {/* Description expand/collapse */}
             <div className="space-y-2">
               <h3 className="font-semibold text-sm uppercase tracking-widest text-muted-foreground">
                 About this book
@@ -474,7 +563,7 @@ export default function BookDetail() {
               </button>
             </div>
 
-            {/* Quick book facts strip */}
+            {/* Quick facts */}
             <div className="grid grid-cols-3 gap-3 py-4 border-y">
               {[
                 {
@@ -498,9 +587,8 @@ export default function BookDetail() {
               ))}
             </div>
 
-            {/* Tabs: Description / Details / Reviews */}
+            {/* ── Tabs ── */}
             <div ref={reviewsRef} className="space-y-4 pt-2">
-              {/* Custom tab bar */}
               <div className="flex border-b gap-6">
                 {(["description", "details", "reviews"] as const).map((tab) => (
                   <button
@@ -519,7 +607,6 @@ export default function BookDetail() {
               </div>
 
               <AnimatePresence mode="wait">
-                {/* Description tab */}
                 {activeTab === "description" && (
                   <motion.div
                     key="description"
@@ -529,7 +616,6 @@ export default function BookDetail() {
                     className="text-muted-foreground leading-relaxed text-sm space-y-3"
                   >
                     <p>{book.description}</p>
-                    {/* "Customers who bought this also bought" chips */}
                     <div className="pt-4 space-y-2">
                       <p className="text-xs font-semibold uppercase tracking-widest text-foreground">
                         Frequently bought together
@@ -554,7 +640,6 @@ export default function BookDetail() {
                   </motion.div>
                 )}
 
-                {/* Details tab */}
                 {activeTab === "details" && (
                   <motion.div
                     key="details"
@@ -586,7 +671,6 @@ export default function BookDetail() {
                   </motion.div>
                 )}
 
-                {/* Reviews tab */}
                 {activeTab === "reviews" && (
                   <motion.div
                     key="reviews"
@@ -595,9 +679,7 @@ export default function BookDetail() {
                     exit={{ opacity: 0 }}
                     className="space-y-8"
                   >
-                    {/* Rating summary + breakdown */}
                     <div className="grid md:grid-cols-[auto_1fr] gap-8 p-5 rounded-2xl bg-accent/30 border">
-                      {/* Big number */}
                       <div className="flex flex-col items-center justify-center gap-1 pr-8 border-r">
                         <span className="text-6xl font-serif font-bold leading-none">
                           {avgRating.toFixed(1)}
@@ -607,8 +689,6 @@ export default function BookDetail() {
                           {reviews.length} ratings
                         </span>
                       </div>
-
-                      {/* Bar breakdown */}
                       <div className="space-y-2 justify-center flex flex-col">
                         {breakdown.map(({ stars, pct, count }) => (
                           <button
@@ -655,7 +735,6 @@ export default function BookDetail() {
                       </div>
                     </div>
 
-                    {/* Stats row */}
                     <div className="grid grid-cols-3 gap-3">
                       {[
                         {
@@ -687,7 +766,6 @@ export default function BookDetail() {
                       ))}
                     </div>
 
-                    {/* Write a review */}
                     <div className="border rounded-2xl p-5">
                       <h3 className="font-serif font-bold text-lg mb-4">
                         Write a Customer Review
@@ -699,7 +777,6 @@ export default function BookDetail() {
                       />
                     </div>
 
-                    {/* Filtered reviews list */}
                     <div>
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="font-semibold text-sm">
@@ -724,6 +801,236 @@ export default function BookDetail() {
                 )}
               </AnimatePresence>
             </div>
+
+            {/* ════════════════════════════════════════════════════════════════
+                ── Accordion: From the Publisher · Book Details · About Author ──
+                ════════════════════════════════════════════════════════════════ */}
+            <div className="space-y-3 pt-6">
+              {/* Section label */}
+              <div className="flex items-center gap-3 mb-1">
+                <div className="h-px flex-1 bg-border" />
+                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground px-1">
+                  More Information
+                </span>
+                <div className="h-px flex-1 bg-border" />
+              </div>
+
+              {/* ── 1. From the Publisher ──────────────────────────────────── */}
+              <AccordionPanel
+                id="publisher"
+                icon={Building2}
+                title="From the Publisher"
+                openId={openAccordion}
+                setOpenId={setOpenAccordion}
+              >
+                <div className="space-y-5 pt-3">
+                  {/* Publisher identity */}
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary font-serif font-bold text-xl shrink-0">
+                      {(book.publisher ?? "P").charAt(0)}
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold leading-tight">
+                        {book.publisher ?? "Publisher"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Official Publisher
+                      </p>
+                    </div>
+                    <Badge
+                      variant="outline"
+                      className="ml-auto text-[10px] text-green-600 border-green-200 bg-green-50 h-5"
+                    >
+                      Verified
+                    </Badge>
+                  </div>
+
+                  {/* Editorial note */}
+                  <blockquote className="relative pl-5 border-l-[3px] border-primary/30 space-y-1">
+                    <span className="absolute -top-2 left-2 text-primary/20 text-4xl font-serif leading-none select-none">
+                      "
+                    </span>
+                    <p className="italic text-sm text-muted-foreground leading-relaxed">
+                      {book.description
+                        ? book.description.slice(0, 260) +
+                          (book.description.length > 260 ? "…" : "")
+                        : "An exceptional work from our catalogue, celebrated for its literary merit and enduring relevance to readers across generations."}
+                    </p>
+                    <p className="text-xs font-semibold text-foreground not-italic">
+                      — {book.publisher ?? "The Publisher"}
+                    </p>
+                  </blockquote>
+
+                  {/* Publisher meta grid */}
+                  <div className="grid grid-cols-2 gap-2">
+                    {[
+                      { label: "Imprint", value: book.publisher ?? "—" },
+                      { label: "Edition", value: "1st Edition" },
+                      { label: "Publication Date", value: book.pubDate },
+                      { label: "Country of Origin", value: "India" },
+                    ].map(({ label, value }) => (
+                      <div
+                        key={label}
+                        className="rounded-xl bg-accent/50 border border-border/60 px-3 py-2.5"
+                      >
+                        <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                          {label}
+                        </p>
+                        <p className="text-sm font-medium text-foreground mt-0.5">
+                          {value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </AccordionPanel>
+
+              {/* ── 2. Book Details ───────────────────────────────────────── */}
+              <AccordionPanel
+                id="bookdetails"
+                icon={ListCollapse}
+                title="Book Details"
+                openId={openAccordion}
+                setOpenId={setOpenAccordion}
+              >
+                <dl className="pt-3">
+                  {[
+                    ["ISBN-13", book.isbn],
+                    [
+                      "ISBN-10",
+                      book.isbn?.replace(/-/g, "").slice(3, 12) ?? "—",
+                    ],
+                    ["Language", "Marathi / English"],
+                    ["Pages", book.pages.toString()],
+                    ["Available Formats", book.formats.join(", ")],
+                    ["Publisher", book.publisher ?? "—"],
+                    ["Publication Date", book.pubDate],
+                    ["Genre", book.genres.join(", ")],
+                    ["Reading Age", "14+"],
+                    ["Dimensions", "21 × 14 × 2 cm"],
+                    ["Weight", "320 g"],
+                    [
+                      "Binding",
+                      book.formats.includes("Hardcover")
+                        ? "Hardcover"
+                        : "Paperback",
+                    ],
+                  ].map(([label, value]) => (
+                    <DetailRow key={label} label={label} value={value} />
+                  ))}
+                </dl>
+              </AccordionPanel>
+
+              {/* ── 3. About the Author ───────────────────────────────────── */}
+              <AccordionPanel
+                id="author"
+                icon={UserRound}
+                title="About the Author"
+                openId={openAccordion}
+                setOpenId={setOpenAccordion}
+              >
+                <div className="space-y-5 pt-3">
+                  {/* Author identity card */}
+                  <div className="flex items-start gap-4 p-4 rounded-2xl bg-accent/30 border border-border/60">
+                    {/* Avatar with verified dot */}
+                    <div className="relative shrink-0">
+                      <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 via-primary/10 to-transparent border border-primary/20 flex items-center justify-center text-primary font-serif font-bold text-2xl">
+                        {book.author.charAt(0)}
+                      </div>
+                      <div className="absolute -bottom-1 -right-1 h-5 w-5 rounded-full bg-green-500 border-2 border-background flex items-center justify-center">
+                        <Check className="h-2.5 w-2.5 text-white" />
+                      </div>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-serif font-bold text-base leading-tight">
+                        {book.author}
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Verified Author · India
+                      </p>
+                      {/* Genre tags */}
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {book.genres.slice(0, 3).map((g) => (
+                          <span
+                            key={g}
+                            className="rounded-full bg-background border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground"
+                          >
+                            {g}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bio */}
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {book.author} is a celebrated author whose works have moved
+                    and inspired readers across India and beyond. Known for
+                    their command over language and profound understanding of
+                    the human condition, {book.author.split(" ")[0]}'s writing
+                    blends traditional storytelling with contemporary themes —
+                    creating narratives that are both timeless and deeply
+                    relevant. Their books have earned critical acclaim, numerous
+                    literary honours, and a devoted readership spanning several
+                    generations.
+                  </p>
+
+                  {/* Author stats */}
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { label: "Books Published", value: "12+" },
+                      { label: "Awards Won", value: "5" },
+                      { label: "Languages", value: "8" },
+                    ].map(({ label, value }) => (
+                      <div
+                        key={label}
+                        className="rounded-xl bg-accent/50 border border-border/60 p-3 text-center"
+                      >
+                        <p className="font-serif font-bold text-xl text-primary leading-none">
+                          {value}
+                        </p>
+                        <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mt-1 leading-tight">
+                          {label}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* More books by this author */}
+                  {related.length > 0 && (
+                    <div className="space-y-2.5">
+                      <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                        More by {book.author.split(" ")[0]}
+                      </p>
+                      <div
+                        className="flex gap-3 overflow-x-auto pb-1"
+                        style={{ scrollbarWidth: "none" }}
+                      >
+                        {related.map((b) => (
+                          <Link
+                            key={b.id}
+                            to={`/books/${b.slug}`}
+                            className="shrink-0 group"
+                          >
+                            <div className="w-14 h-20 rounded-xl overflow-hidden border border-border group-hover:border-primary/50 transition-all duration-200 shadow-sm group-hover:shadow-md">
+                              <img
+                                src={b.cover}
+                                alt={b.title}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                              />
+                            </div>
+                            <p className="text-[10px] text-muted-foreground mt-1.5 w-14 line-clamp-2 group-hover:text-foreground transition-colors leading-tight">
+                              {b.title}
+                            </p>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </AccordionPanel>
+            </div>
+            {/* ── End Accordion ── */}
           </motion.div>
 
           {/* ── Col 3: Buy box (sticky) ── */}
@@ -734,19 +1041,13 @@ export default function BookDetail() {
             className="sticky top-24 space-y-4"
           >
             <div className="rounded-2xl border bg-card shadow-soft p-5 space-y-5">
-              {/* Price */}
               <PriceDisplay book={book} size="lg" />
 
-              {/* In stock indicator */}
               <div className="flex items-center gap-2 text-green-600 text-sm font-medium">
                 <Check className="h-4 w-4" /> In Stock — Ready to Ship
               </div>
 
-              {/* Format selector */}
               <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                  Select Format
-                </label>
                 <FormatSelector
                   formats={book.formats}
                   selected={selectedFormat}
@@ -754,7 +1055,6 @@ export default function BookDetail() {
                 />
               </div>
 
-              {/* CTA buttons */}
               <div className="space-y-2 pt-1">
                 <Button
                   size="lg"
@@ -773,7 +1073,6 @@ export default function BookDetail() {
                 </Button>
               </div>
 
-              {/* Wishlist + Share */}
               <div className="flex gap-2 pt-1">
                 <Button
                   variant="ghost"
@@ -809,7 +1108,6 @@ export default function BookDetail() {
                 </Button>
               </div>
 
-              {/* Gift option */}
               <label className="flex items-center gap-2 text-sm cursor-pointer group">
                 <input
                   type="checkbox"
@@ -820,6 +1118,9 @@ export default function BookDetail() {
                 </span>
               </label>
             </div>
+
+            {/* Buying Options */}
+            <BuyingOptions book={book} />
 
             {/* Seller info */}
             <div className="rounded-xl border bg-card p-4 text-sm space-y-2">

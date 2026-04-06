@@ -11,11 +11,11 @@ export default function Home() {
   return (
     <main>
       <Hero />
+      <OnSaleCountdown />
       <FeaturedCollections />
       <VideoSlider />
       <TabbedProducts />
       <Bestsellers />
-      <OnSaleCountdown />
       <Testimonials />
       <InstagramFeed />
       <Newsletter />
