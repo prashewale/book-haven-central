@@ -8,20 +8,21 @@ import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { VideoSlider } from "@/components/sections/VideoSlider";
 import { MembershipBanner } from "@/components/sections/MembershipBanner";
-
+import { MembershipFloat } from "@/components/sections/MembershipFloat";
 export default function Home() {
   return (
     <main>
       <Hero />
+      <MembershipBanner />
       <OnSaleCountdown />
       <FeaturedCollections />
-      <MembershipBanner />
       <VideoSlider />
       <TabbedProducts />
       <Bestsellers />
       <Testimonials />
       <InstagramFeed />
       <Newsletter />
+      <MembershipFloat />
     </main>
   );
 }
