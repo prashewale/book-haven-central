@@ -219,9 +219,9 @@ export default function Header() {
             </form>
 
             <Link
-              to="/login"
+              to="/profile"
               className="p-2 text-muted-foreground hover:text-foreground transition-colors hidden md:flex"
-              aria-label="Account"
+              aria-label="Profile"
             >
               <User className="h-5 w-5" />
             </Link>
