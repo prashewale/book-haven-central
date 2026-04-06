@@ -1,57 +1,11 @@
 import { motion } from "framer-motion";
-import { Check, Crown, Star, Zap } from "lucide-react";
+import { Crown, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { toast } from "sonner";
-
-const PLANS = [
-  {
-    name: "Reader",
-    price: 0,
-    period: "Free forever",
-    icon: Star,
-    features: [
-      "Browse full catalog",
-      "Wishlist (up to 10)",
-      "Monthly newsletter",
-      "Standard shipping",
-    ],
-    cta: "Current Plan",
-    highlight: false,
-  },
-  {
-    name: "Bookworm",
-    price: 450,
-    period: " For 3 Years",
-    icon: Zap,
-    features: [
-      "Everything in Reader",
-      "10% off all orders",
-      "Free standard shipping",
-      "Early access to new releases",
-      "Unlimited wishlist",
-      "Exclusive member events",
-    ],
-    cta: "Start Free Trial",
-    highlight: true,
-  },
-  {
-    name: "Literary Elite",
-    price: 199,
-    period: "/month",
-    icon: Crown,
-    features: [
-      "Everything in Bookworm",
-      "20% off all orders",
-      "Free express shipping",
-      "Signed first editions access",
-      "Author meet & greet invites",
-      "1 free eBook per month",
-      "Priority customer support",
-    ],
-    cta: "Go Elite",
-    highlight: false,
-  },
-];
+import { MEMBERSHIP_PLANS, MOCK_USERS } from "@/lib/mock-users";
+import { Badge } from "@/components/ui/badge";
 
 export default function Membership() {
   return (
@@ -59,65 +13,112 @@ export default function Membership() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center mb-16 space-y-4"
+        className="text-center mb-12 space-y-4"
       >
-        <h1 className="text-4xl md:text-5xl font-serif font-bold">
-          Membership Plans
-        </h1>
+        <h1 className="text-4xl md:text-5xl font-serif font-bold">Membership Plans</h1>
         <p className="text-muted-foreground max-w-xl mx-auto">
-          Join the Mehta Publishing House family and unlock exclusive perks for
-          book lovers.
+          Join the Mehta Publishing House family and unlock exclusive discounts on every purchase.
         </p>
       </motion.div>
 
-      <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        {PLANS.map((plan, i) => (
-          <motion.div
-            key={plan.name}
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.15 }}
-            className={`relative rounded-2xl border p-8 flex flex-col ${
-              plan.highlight
-                ? "border-primary bg-accent/50 shadow-warm scale-105"
-                : "border-border bg-card"
-            }`}
-          >
-            {plan.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground text-xs font-bold px-4 py-1 rounded-full">
-                Most Popular
-              </span>
-            )}
-            <div className="text-center mb-6">
-              <plan.icon
-                className={`h-10 w-10 mx-auto mb-3 ${plan.highlight ? "text-primary" : "text-muted-foreground"}`}
-              />
-              <h3 className="font-serif text-2xl font-bold">{plan.name}</h3>
-              <div className="mt-2">
-                <span className="text-4xl font-bold">₹{plan.price}</span>
-                <span className="text-sm text-muted-foreground">
-                  {plan.period}
-                </span>
-              </div>
-            </div>
-            <ul className="space-y-3 flex-1">
-              {plan.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm">
-                  <Check className="h-4 w-4 text-primary mt-0.5 shrink-0" />
-                  <span>{f}</span>
-                </li>
-              ))}
-            </ul>
-            <Button
-              className={`mt-8 rounded-full w-full ${plan.highlight ? "" : "variant-outline"}`}
-              variant={plan.highlight ? "default" : "outline"}
-              onClick={() => toast.success(`${plan.name} selected! (Demo)`)}
-            >
-              {plan.cta}
-            </Button>
-          </motion.div>
-        ))}
-      </div>
+      {/* Plans Table */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+        <Card className="max-w-4xl mx-auto mb-12">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Crown className="h-5 w-5 text-primary" /> Available Memberships
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-16">Sr. No</TableHead>
+                  <TableHead>Membership</TableHead>
+                  <TableHead>Duration</TableHead>
+                  <TableHead className="text-center">Discount</TableHead>
+                  <TableHead className="text-right">Price (&#8377;)</TableHead>
+                  <TableHead className="text-right">Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {MEMBERSHIP_PLANS.map((plan) => (
+                  <TableRow key={plan.code}>
+                    <TableCell className="font-medium">{plan.srNo}</TableCell>
+                    <TableCell>
+                      <span className="font-semibold">{plan.code}</span>
+                    </TableCell>
+                    <TableCell>{plan.duration}</TableCell>
+                    <TableCell className="text-center">
+                      <Badge variant="secondary">{plan.discount}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right font-semibold">&#8377;{plan.price}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => toast.success(`${plan.code} membership selected! (Demo)`)}
+                      >
+                        Subscribe
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </motion.div>
+
+      {/* Active Members */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+        <Card className="max-w-4xl mx-auto">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-primary" /> Active Members
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Member</TableHead>
+                  <TableHead>Plan</TableHead>
+                  <TableHead>City</TableHead>
+                  <TableHead className="text-center">Reward Points</TableHead>
+                  <TableHead className="text-right">Since</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {MOCK_USERS.map((user) => {
+                  const plan = MEMBERSHIP_PLANS.find((p) => p.code === user.membershipCode);
+                  return (
+                    <TableRow key={user.id}>
+                      <TableCell>
+                        <div className="flex items-center gap-3">
+                          <img src={user.avatar} alt={user.name} className="h-8 w-8 rounded-full object-cover" />
+                          <div>
+                            <p className="font-medium text-sm">{user.name}</p>
+                            <p className="text-xs text-muted-foreground">{user.email}</p>
+                          </div>
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <Badge>{plan?.code ?? "N/A"}</Badge>
+                      </TableCell>
+                      <TableCell className="text-sm">{user.city}</TableCell>
+                      <TableCell className="text-center font-semibold text-primary">{user.rewardPoints.toLocaleString()}</TableCell>
+                      <TableCell className="text-right text-sm text-muted-foreground">
+                        {new Date(user.joinedDate).toLocaleDateString("en-IN", { year: "numeric", month: "short" })}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </motion.div>
     </main>
   );
 }
