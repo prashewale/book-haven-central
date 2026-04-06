@@ -1,62 +1,89 @@
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { useState, useEffect, useCallback } from 'react';
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useState, useEffect, useCallback } from "react";
 
+// ─── Banner Slides ────────────────────────────────────────────────────────────
+// `banner`      → full-width banner image URL from Mehta Publishing House
+// `title`       → bold heading overlaid on the banner
+// `text`        → supporting line below the title
+// `cta`         → primary button (label + internal route or external href)
+// `secondaryCta`→ optional ghost button
+// `to`          → set `external: true` for full URLs, false for react-router routes
 const SLIDES = [
   {
-    subtitle: 'Welcome to Mehta Publishing House',
-    title: 'Discover Your Next',
-    highlight: 'Favorite',
-    titleEnd: 'Read',
-    description: 'Explore thousands of curated titles across every genre. From timeless classics to today\'s bestsellers.',
-    cta: { label: 'Shop Books', to: '/books' },
-    secondaryCta: { label: 'New Releases', to: '/books?filter=new' },
-    images: [
-      'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?w=300&h=400&fit=crop',
-    ],
+    banner: "https://www.mehtapublishinghouse.com/images/homebanners/536.JPG",
+    title: "Chhoti Aai & Amaravatiche Chhappan Swabhav",
+    text: "Two unforgettable stories — now available together. Explore the richness of Marathi literature.",
+    cta: {
+      label: "Buy Now",
+      href: "https://www.mehtapublishinghouse.com/book-details/CHHOTI-AAI/4230.aspx",
+      external: true,
+    },
+    secondaryCta: {
+      label: "All New Arrivals",
+      href: "/books?filter=new",
+      external: false,
+    },
+    align: "left" as const,
   },
   {
-    subtitle: 'Bestsellers Collection',
-    title: 'Stories That',
-    highlight: 'Captivate',
-    titleEnd: 'Millions',
-    description: 'Dive into the most loved books of the year. Hand-picked by readers around the world.',
-    cta: { label: 'View Bestsellers', to: '/books?filter=bestseller' },
-    secondaryCta: { label: 'On Sale Now', to: '/books?filter=sale' },
-    images: [
-      'https://images.unsplash.com/photo-1524578271613-d550eacf6090?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=300&h=400&fit=crop',
-    ],
+    banner: "https://www.mehtapublishinghouse.com/images/homebanners/534.JPG",
+    title: "Haravlelya Karnaphule & Lullaby Town",
+    text: "A captivating duo — two worlds, one shelf. Now in translation.",
+    cta: {
+      label: "Buy Now",
+      href: "https://www.mehtapublishinghouse.com/book-details/LULLABY-TOWN/4227.aspx",
+      external: true,
+    },
+    secondaryCta: {
+      label: "Browse Translations",
+      href: "/books",
+      external: false,
+    },
+    align: "right" as const,
   },
   {
-    subtitle: 'New This Month',
-    title: 'Fresh Pages',
-    highlight: 'Await',
-    titleEnd: 'You',
-    description: 'Be the first to explore newly released titles. Updated weekly with the latest arrivals.',
-    cta: { label: 'Browse New', to: '/books?filter=new' },
-    secondaryCta: { label: 'All Books', to: '/books' },
-    images: [
-      'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1516979187457-637abb4f9353?w=300&h=400&fit=crop',
-      'https://images.unsplash.com/photo-1510172951991-856a654063f9?w=300&h=400&fit=crop',
-    ],
+    banner: "https://www.mehtapublishinghouse.com/images/homebanners/538.JPG",
+    title: "The Magic of Lost Series",
+    text: "An enchanting series that takes you beyond the ordinary — into worlds waiting to be found.",
+    cta: { label: "Explore the Series", href: "/books", external: false },
+    secondaryCta: { label: "View All Books", href: "/books", external: false },
+    align: "center" as const,
+  },
+  {
+    banner: "https://www.mehtapublishinghouse.com/images/homebanners/537.JPG",
+    title: "Atarkya",
+    text: "The inexplicable. The gripping. A new must-read from Mehta Publishing House.",
+    cta: {
+      label: "Buy Now",
+      href: "https://www.mehtapublishinghouse.com/book-details/ATARKYA/4229.aspx",
+      external: true,
+    },
+    secondaryCta: { label: "More Like This", href: "/books", external: false },
+    align: "left" as const,
   },
 ];
+
+// Alignment helpers
+const alignClass = {
+  left: "items-start text-left",
+  right: "items-end text-right",
+  center: "items-center text-center",
+};
 
 export function Hero() {
   const [current, setCurrent] = useState(0);
 
-  const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), []);
-  const prev = useCallback(() => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length), []);
+  const next = useCallback(
+    () => setCurrent((c) => (c + 1) % SLIDES.length),
+    [],
+  );
+  const prev = useCallback(
+    () => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length),
+    [],
+  );
 
   useEffect(() => {
     const timer = setInterval(next, 6000);
@@ -66,95 +93,161 @@ export function Hero() {
   const slide = SLIDES[current];
 
   return (
-    <section className="relative overflow-hidden bg-accent/50">
-      <div className="container mx-auto px-4 py-20 md:py-32">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+    <section className="relative w-full overflow-hidden bg-stone-900">
+      {/* ── Banner image layer ── */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, scale: 1.03 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 1.03 }}
+          transition={{ duration: 0.7, ease: "easeInOut" }}
+          className="absolute inset-0"
+        >
+          <img
+            src={slide.banner}
+            alt={slide.title}
+            className="w-full h-full object-cover object-center"
+          />
+          {/* Gradient scrim so text is always readable */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/10" />
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── Content overlay ── */}
+      <div className="relative z-10 flex flex-col justify-end min-h-[60vh] md:min-h-[75vh] lg:min-h-[85vh]">
+        <div className="container mx-auto px-6 md:px-10 pb-16 md:pb-20">
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.5 }}
-              className="space-y-8"
+              transition={{ duration: 0.55, delay: 0.15 }}
+              className={`flex flex-col gap-5 max-w-2xl ${alignClass[slide.align]} ${
+                slide.align === "right"
+                  ? "ml-auto"
+                  : slide.align === "center"
+                    ? "mx-auto"
+                    : ""
+              }`}
             >
-              <div className="space-y-4">
-                <p className="text-sm font-semibold uppercase tracking-widest text-primary">
-                  {slide.subtitle}
-                </p>
-                <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold leading-[1.1] text-balance">
-                  {slide.title}{' '}
-                  <span className="text-primary italic">{slide.highlight}</span>{' '}
-                  {slide.titleEnd}
-                </h1>
-                <p className="text-lg text-muted-foreground max-w-md leading-relaxed">
-                  {slide.description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-4">
-                <Button size="lg" className="h-13 px-8 rounded-full text-base shadow-warm" asChild>
-                  <Link to={slide.cta.to}>
-                    {slide.cta.label} <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                <Button size="lg" variant="outline" className="h-13 px-8 rounded-full text-base" asChild>
-                  <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
-                </Button>
-              </div>
-            </motion.div>
-          </AnimatePresence>
+              {/* Title */}
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight text-white drop-shadow-lg">
+                {slide.title}
+              </h1>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={current}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="relative hidden md:block"
-            >
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4 pt-8">
-                  <img src={slide.images[0]} alt="Featured book" className="rounded-xl shadow-warm object-cover w-full aspect-[3/4]" />
-                  <img src={slide.images[1]} alt="Featured book" className="rounded-xl shadow-soft object-cover w-full aspect-[3/4]" />
-                </div>
-                <div className="space-y-4">
-                  <img src={slide.images[2]} alt="Featured book" className="rounded-xl shadow-soft object-cover w-full aspect-[3/4]" />
-                  <img src={slide.images[3]} alt="Featured book" className="rounded-xl shadow-warm object-cover w-full aspect-[3/4]" />
-                </div>
+              {/* Supporting text */}
+              <p className="text-base md:text-lg text-white/85 leading-relaxed max-w-lg drop-shadow">
+                {slide.text}
+              </p>
+
+              {/* CTA buttons */}
+              <div
+                className={`flex flex-wrap gap-3 ${
+                  slide.align === "center"
+                    ? "justify-center"
+                    : slide.align === "right"
+                      ? "justify-end"
+                      : ""
+                }`}
+              >
+                {/* Primary CTA */}
+                {slide.cta.external ? (
+                  <a
+                    href={slide.cta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      size="lg"
+                      className="h-12 px-7 rounded-full text-base shadow-warm"
+                    >
+                      {slide.cta.label} <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    size="lg"
+                    className="h-12 px-7 rounded-full text-base shadow-warm"
+                    asChild
+                  >
+                    <Link to={slide.cta.href}>
+                      {slide.cta.label} <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                )}
+
+                {/* Secondary CTA */}
+                {slide.secondaryCta.external ? (
+                  <a
+                    href={slide.secondaryCta.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="h-12 px-7 rounded-full text-base bg-white/10 border-white/40 text-white hover:bg-white/20 hover:border-white"
+                    >
+                      {slide.secondaryCta.label}
+                    </Button>
+                  </a>
+                ) : (
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="h-12 px-7 rounded-full text-base bg-white/10 border-white/40 text-white hover:bg-white/20 hover:border-white"
+                    asChild
+                  >
+                    <Link to={slide.secondaryCta.href}>
+                      {slide.secondaryCta.label}
+                    </Link>
+                  </Button>
+                )}
               </div>
             </motion.div>
           </AnimatePresence>
         </div>
 
-        {/* Slider controls */}
-        <div className="flex items-center justify-center gap-4 mt-10">
+        {/* ── Slider controls ── */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-4 z-20">
           <button
             onClick={prev}
-            className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+            className="p-2 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm text-white/70 hover:text-white hover:border-white/70 transition-colors"
             aria-label="Previous slide"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
+
           <div className="flex gap-2">
             {SLIDES.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
                 className={`h-2 rounded-full transition-all duration-300 ${
-                  i === current ? 'w-8 bg-primary' : 'w-2 bg-border hover:bg-muted-foreground'
+                  i === current
+                    ? "w-8 bg-white"
+                    : "w-2 bg-white/40 hover:bg-white/70"
                 }`}
                 aria-label={`Go to slide ${i + 1}`}
               />
             ))}
           </div>
+
           <button
             onClick={next}
-            className="p-2 rounded-full border border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
+            className="p-2 rounded-full border border-white/30 bg-black/20 backdrop-blur-sm text-white/70 hover:text-white hover:border-white/70 transition-colors"
             aria-label="Next slide"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
+        </div>
+
+        {/* ── Slide counter (top-right) ── */}
+        <div className="absolute top-6 right-6 text-white/60 text-sm font-medium tracking-widest select-none z-20">
+          {String(current + 1).padStart(2, "0")} /{" "}
+          {String(SLIDES.length).padStart(2, "0")}
         </div>
       </div>
     </section>
