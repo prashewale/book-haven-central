@@ -7,12 +7,15 @@ import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { VideoSlider } from "@/components/sections/VideoSlider";
+import { MembershipBanner } from "@/components/sections/MembershipBanner";
+
 export default function Home() {
   return (
     <main>
       <Hero />
       <OnSaleCountdown />
       <FeaturedCollections />
+      <MembershipBanner />
       <VideoSlider />
       <TabbedProducts />
       <Bestsellers />

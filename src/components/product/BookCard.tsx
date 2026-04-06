@@ -1,12 +1,17 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart, Star, Crown } from "lucide-react";
 import type { Book } from "@/lib/types";
 import { useCart } from "@/lib/store";
+import { useMembership, getMembershipPrice } from "@/lib/membership-store";
 import { Button } from "@/components/ui/button";
 
 export function BookCard({ book }: { book: Book }) {
   const addItem = useCart((s) => s.addItem);
+  const discountPercent = useMembership((s) => s.getDiscountPercent());
+  const basePrice = book.discountPrice || book.price;
+  const hasMembership = discountPercent > 0;
+  const memberPrice = hasMembership ? getMembershipPrice(basePrice, discountPercent) : basePrice;
 
   return (
     <motion.div
@@ -51,13 +56,20 @@ export function BookCard({ book }: { book: Book }) {
         </Link>
         <p className="text-sm text-muted-foreground">{book.author}</p>
         <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-primary">
-              ₹{(book.discountPrice || book.price).toFixed(2)}
-            </span>
-            {book.discountPrice && (
-              <span className="text-sm text-muted-foreground line-through">
-                ₹{book.price.toFixed(2)}
+          <div className="flex flex-col gap-0.5">
+            <div className="flex items-center gap-2">
+              <span className="font-semibold text-primary">
+                ₹{memberPrice.toFixed(2)}
+              </span>
+              {book.discountPrice && (
+                <span className="text-sm text-muted-foreground line-through">
+                  ₹{book.price.toFixed(2)}
+                </span>
+              )}
+            </div>
+            {hasMembership && (
+              <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-primary">
+                <Crown className="h-3 w-3" /> Member saves ₹{(basePrice - memberPrice).toFixed(0)}
               </span>
             )}
           </div>

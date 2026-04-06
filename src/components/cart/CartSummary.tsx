@@ -1,9 +1,22 @@
+import { Crown } from "lucide-react";
 import { useCart } from "@/lib/store";
+import { useMembership, getMembershipPrice } from "@/lib/membership-store";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 export function CartSummary() {
-  const sub = useCart((s) => s.subtotal());
+  const items = useCart((s) => s.items);
+  const discountPercent = useMembership((s) => s.getDiscountPercent());
+  const hasMembership = discountPercent > 0;
+
+  const subtotalBeforeMembership = items.reduce(
+    (sum, i) => sum + (i.book.discountPrice || i.book.price) * i.quantity, 0
+  );
+  const subtotalAfterMembership = items.reduce(
+    (sum, i) => sum + getMembershipPrice(i.book.discountPrice || i.book.price, discountPercent) * i.quantity, 0
+  );
+  const memberSavings = subtotalBeforeMembership - subtotalAfterMembership;
+  const sub = subtotalAfterMembership;
   const shipping = sub > 50 ? 0 : 5.99;
   const total = sub + shipping;
 
@@ -13,8 +26,14 @@ export function CartSummary() {
       <div className="space-y-3 text-sm">
         <div className="flex justify-between">
           <span className="text-muted-foreground">Subtotal</span>
-          <span className="font-medium">₹{sub.toFixed(2)}</span>
+          <span className="font-medium">₹{subtotalBeforeMembership.toFixed(2)}</span>
         </div>
+        {hasMembership && memberSavings > 0 && (
+          <div className="flex justify-between text-primary">
+            <span className="flex items-center gap-1"><Crown className="h-3.5 w-3.5" /> Member Discount</span>
+            <span className="font-medium">-₹{memberSavings.toFixed(2)}</span>
+          </div>
+        )}
         <div className="flex justify-between">
           <span className="text-muted-foreground">Shipping</span>
           <span className="font-medium">
@@ -22,9 +41,7 @@ export function CartSummary() {
           </span>
         </div>
         {shipping > 0 && (
-          <p className="text-xs text-muted-foreground">
-            Free shipping on orders over ₹500
-          </p>
+          <p className="text-xs text-muted-foreground">Free shipping on orders over ₹500</p>
         )}
         <Separator />
         <div className="flex justify-between text-lg font-semibold">
