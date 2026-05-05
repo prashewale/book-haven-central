@@ -29,7 +29,7 @@ import { BOOKS, MOCK_REVIEWS } from "@/lib/mock-data";
 import { useCart } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FormatSelector } from "@/components/product/FormatSelector";
+
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import { BookGrid } from "@/components/product/BookGrid";
 import { ReviewForm } from "@/components/product/ReviewForm";
