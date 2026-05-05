@@ -1047,12 +1047,11 @@ export default function BookDetail() {
                 <Check className="h-4 w-4" /> In Stock — Ready to Ship
               </div>
 
-              <div className="space-y-2">
-                <FormatSelector
-                  formats={book.formats}
-                  selected={selectedFormat}
-                  onSelect={setSelectedFormat}
-                />
+              <div className="text-xs text-muted-foreground">
+                Format: <span className="font-semibold text-foreground">{book.formats[0]}</span>
+                {book.formats.length > 1 && (
+                  <span className="ml-1">+ {book.formats.length - 1} more</span>
+                )}
               </div>
 
               <div className="space-y-2 pt-1">
