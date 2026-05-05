@@ -1,24 +1,32 @@
-import { Hero } from "@/components/sections/Hero";
-import { FeaturedCollections } from "@/components/sections/FeaturedCollections";
-import { Bestsellers } from "@/components/sections/Bestsellers";
+import { HeroWithOffer } from "@/components/sections/HeroWithOffer";
 import { OnSaleCountdown } from "@/components/sections/OnSaleCountdown";
-import { TabbedProducts } from "@/components/sections/TabbedProducts";
+import {
+  NewArrivalsSection,
+  UpcomingSection,
+  FeaturedSection,
+  AllTimeBestsellerSection,
+  RecentBestsellerSection,
+} from "@/components/sections/HomeBookSections";
+import { VerticalCategories } from "@/components/sections/VerticalCategories";
+import { FeaturedAuthor } from "@/components/sections/FeaturedAuthor";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { VideoSlider } from "@/components/sections/VideoSlider";
-import { MembershipBanner } from "@/components/sections/MembershipBanner";
 
 export default function Home() {
   return (
     <main>
-      <Hero />
+      <HeroWithOffer />
       <OnSaleCountdown />
-      <FeaturedCollections />
-      <MembershipBanner />
+      <NewArrivalsSection />
+      <UpcomingSection />
+      <FeaturedSection />
+      <AllTimeBestsellerSection />
+      <RecentBestsellerSection />
+      <VerticalCategories />
+      <FeaturedAuthor />
       <VideoSlider />
-      <TabbedProducts />
-      <Bestsellers />
       <Testimonials />
       <InstagramFeed />
       <Newsletter />
