@@ -1,9 +1,50 @@
 import { Link } from "react-router-dom";
-import { BookOpen, Instagram, Twitter, Facebook } from "lucide-react";
+import { Instagram, Twitter, Facebook, Star } from "lucide-react";
+import { BOOKS } from "@/lib/mock-data";
 
 export default function Footer() {
+  const editorsPick = [...BOOKS]
+    .filter((b) => b.rating >= 4.7)
+    .slice(0, 4);
+
   return (
     <footer className="border-t bg-card">
+      {/* Editor's Pick */}
+      <div className="border-b bg-accent/20">
+        <div className="container mx-auto px-4 py-10">
+          <div className="flex items-center gap-2 mb-5">
+            <Star className="h-4 w-4 text-primary fill-primary" />
+            <h3 className="font-serif text-lg font-bold">Editor's Pick</h3>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {editorsPick.map((b) => (
+              <Link
+                key={b.id}
+                to={`/books/${b.slug}`}
+                className="group flex gap-3 items-center p-2 rounded-lg hover:bg-background transition-colors"
+              >
+                <img
+                  src={b.cover}
+                  alt={b.title}
+                  className="w-12 h-16 object-cover rounded"
+                />
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold line-clamp-2 group-hover:text-primary">
+                    {b.title}
+                  </p>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">
+                    {b.author}
+                  </p>
+                  <p className="text-[11px] font-bold text-primary mt-0.5">
+                    ₹{(b.discountPrice ?? b.price).toFixed(0)}
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
@@ -63,6 +104,7 @@ export default function Footer() {
                 { label: "Distributors", to: "/distributors" },
                 { label: "Membership", to: "/membership" },
                 { label: "Publish eBook", to: "/publish" },
+                { label: "Careers", to: "/careers" },
               ].map((link) => (
                 <li key={link.to}>
                   <Link
