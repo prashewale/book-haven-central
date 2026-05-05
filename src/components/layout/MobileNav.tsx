@@ -18,6 +18,8 @@ const NAV_LINKS = [
   { label: 'Events', to: '/events' },
   { label: 'Distributors', to: '/distributors' },
   { label: 'Publish eBook', to: '/publish' },
+  { label: 'Publish with us', to: '/publish' },
+  { label: 'Careers', to: '/careers' },
   { label: 'Cart', to: '/cart' },
 ];
 
