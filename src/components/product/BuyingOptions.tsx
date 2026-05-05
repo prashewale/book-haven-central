@@ -139,64 +139,44 @@ function StoreRow({ store, isbn }: { store: StoreOption; isbn: string }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       className={cn(
-        "flex items-center gap-3 rounded-xl border p-3 transition-all duration-200",
+        "flex items-center gap-2 rounded-lg border p-2 transition-all duration-200",
         hovered
-          ? "border-primary/40 bg-primary/[0.03] shadow-sm"
+          ? "border-primary/40 bg-primary/[0.03]"
           : "border-border bg-card",
       )}
     >
-      {/* Icon */}
       <div
         className={cn(
-          "flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border text-lg transition-transform duration-200",
-          hovered
-            ? "scale-110 border-primary/20 bg-primary/5"
-            : "border-border bg-accent/40",
+          "flex h-7 w-7 shrink-0 items-center justify-center rounded-md border text-sm",
+          hovered ? "border-primary/20 bg-primary/5" : "border-border bg-accent/40",
         )}
       >
         {store.emoji}
       </div>
 
-      {/* Info */}
       <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-sm font-semibold leading-tight">
+        <div className="flex items-center gap-1">
+          <span className="text-xs font-semibold leading-tight truncate">
             {store.name}
           </span>
-          {store.badge && store.badgeVariant && (
-            <span
-              className={cn(
-                "rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide",
-                BADGE_CLASSES[store.badgeVariant],
-              )}
-            >
-              {store.badge}
-            </span>
-          )}
         </div>
-        <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
-          {store.desc}
-        </p>
       </div>
 
-      {/* Price + CTA */}
-      <div className="flex shrink-0 flex-col items-end gap-1.5">
-        <span className="font-serif text-base font-bold leading-none text-foreground">
-          {store.price}
-        </span>
+      <div className="flex shrink-0 items-center gap-2">
+        <span className="text-xs font-bold text-foreground">{store.price}</span>
         <a
           href={store.url(isbn)}
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
           className={cn(
-            "flex items-center gap-1 rounded-full border px-3 py-1 text-[11px] font-semibold transition-all duration-150",
+            "flex items-center gap-0.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold transition-all",
             hovered
               ? "border-primary bg-primary text-primary-foreground"
               : "border-border text-muted-foreground hover:border-primary hover:text-primary",
           )}
         >
-          {store.cta}
+          Buy
           <ExternalLink className="h-2.5 w-2.5" />
         </a>
       </div>

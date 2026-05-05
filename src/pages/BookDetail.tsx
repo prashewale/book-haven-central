@@ -29,7 +29,7 @@ import { BOOKS, MOCK_REVIEWS } from "@/lib/mock-data";
 import { useCart } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FormatSelector } from "@/components/product/FormatSelector";
+
 import { PriceDisplay } from "@/components/product/PriceDisplay";
 import { BookGrid } from "@/components/product/BookGrid";
 import { ReviewForm } from "@/components/product/ReviewForm";
@@ -882,6 +882,36 @@ export default function BookDetail() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Publisher images / "From the Publisher" gallery */}
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                      From the Publisher
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        book.cover,
+                        ...(book.gallery ?? []),
+                        book.cover,
+                      ]
+                        .slice(0, 3)
+                        .map((src, i) => (
+                          <div
+                            key={i}
+                            className="aspect-square rounded-lg overflow-hidden border bg-muted"
+                          >
+                            <img
+                              src={src}
+                              alt={`Publisher view ${i + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground italic">
+                      Inside views, design highlights, and excerpts curated by the publisher.
+                    </p>
+                  </div>
                 </div>
               </AccordionPanel>
 
@@ -1047,12 +1077,11 @@ export default function BookDetail() {
                 <Check className="h-4 w-4" /> In Stock — Ready to Ship
               </div>
 
-              <div className="space-y-2">
-                <FormatSelector
-                  formats={book.formats}
-                  selected={selectedFormat}
-                  onSelect={setSelectedFormat}
-                />
+              <div className="text-xs text-muted-foreground">
+                Format: <span className="font-semibold text-foreground">{book.formats[0]}</span>
+                {book.formats.length > 1 && (
+                  <span className="ml-1">+ {book.formats.length - 1} more</span>
+                )}
               </div>
 
               <div className="space-y-2 pt-1">

@@ -159,22 +159,38 @@ export default function Header() {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/membership"
+                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Memberships
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
+                <NavigationMenuLink asChild>
+                  <Link
+                    to="/publish"
+                    className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    Publish with us
+                  </Link>
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+
+              <NavigationMenuItem>
                 <NavigationMenuTrigger className="bg-transparent text-muted-foreground hover:text-foreground">
                   More
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <div className="w-[320px] p-4 space-y-1">
+                  <div className="w-[280px] p-4 space-y-1">
                     <Link
                       to="/authors"
                       className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
                       ✍️ Authors
-                    </Link>
-                    <Link
-                      to="/membership"
-                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    >
-                      👑 Membership
                     </Link>
                     <Link
                       to="/events"
@@ -187,12 +203,6 @@ export default function Header() {
                       className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
                     >
                       🚚 Distributors
-                    </Link>
-                    <Link
-                      to="/publish"
-                      className="block rounded-md px-3 py-2 text-sm text-foreground/80 hover:bg-accent hover:text-accent-foreground transition-colors"
-                    >
-                      📝 Publish eBook
                     </Link>
                   </div>
                 </NavigationMenuContent>

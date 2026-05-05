@@ -21,6 +21,7 @@ import Distributors from "@/pages/Distributors";
 import PublishEbook from "@/pages/PublishEbook";
 import NotFound from "@/pages/NotFound";
 import Profile from "@/pages/Profile";
+import Careers from "@/pages/Careers";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ const App = () => (
               <Route path="/distributors" element={<Distributors />} />
               <Route path="/publish" element={<PublishEbook />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path="/careers" element={<Careers />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>

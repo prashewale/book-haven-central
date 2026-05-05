@@ -115,7 +115,7 @@ export function Hero() {
       </AnimatePresence>
 
       {/* ── Content overlay ── */}
-      <div className="relative z-10 flex flex-col justify-end min-h-[60vh] md:min-h-[75vh] lg:min-h-[85vh]">
+      <div className="relative z-10 flex flex-col justify-end min-h-[340px] md:min-h-[400px] lg:min-h-[440px]">
         <div className="container mx-auto px-6 md:px-10 pb-16 md:pb-20">
           <AnimatePresence mode="wait">
             <motion.div
@@ -133,7 +133,7 @@ export function Hero() {
               }`}
             >
               {/* Title */}
-              <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight text-white drop-shadow-lg">
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold leading-tight text-white drop-shadow-lg">
                 {slide.title}
               </h1>
 
