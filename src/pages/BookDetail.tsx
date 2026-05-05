@@ -882,6 +882,36 @@ export default function BookDetail() {
                       </div>
                     ))}
                   </div>
+
+                  {/* Publisher images / "From the Publisher" gallery */}
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                      From the Publisher
+                    </p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        book.cover,
+                        ...(book.gallery ?? []),
+                        book.cover,
+                      ]
+                        .slice(0, 3)
+                        .map((src, i) => (
+                          <div
+                            key={i}
+                            className="aspect-square rounded-lg overflow-hidden border bg-muted"
+                          >
+                            <img
+                              src={src}
+                              alt={`Publisher view ${i + 1}`}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground italic">
+                      Inside views, design highlights, and excerpts curated by the publisher.
+                    </p>
+                  </div>
                 </div>
               </AccordionPanel>
 
