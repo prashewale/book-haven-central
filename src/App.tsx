@@ -55,6 +55,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
+          <MembershipFloat />
           <Footer />
         </div>
       </BrowserRouter>
