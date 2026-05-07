@@ -301,9 +301,9 @@ export default function BookDetail() {
     "description" | "details" | "reviews"
   >("description");
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
-  // Accordion: one open at a time; default open = publisher
+  // Accordion: one open at a time; default open = book details
   const [openAccordion, setOpenAccordion] = useState<string | null>(
-    "publisher",
+    "bookdetails",
   );
   const reviewsRef = useRef<HTMLDivElement>(null);
 
@@ -815,107 +815,7 @@ export default function BookDetail() {
                 <div className="h-px flex-1 bg-border" />
               </div>
 
-              {/* ── 1. From the Publisher ──────────────────────────────────── */}
-              <AccordionPanel
-                id="publisher"
-                icon={Building2}
-                title="From the Publisher"
-                openId={openAccordion}
-                setOpenId={setOpenAccordion}
-              >
-                <div className="space-y-5 pt-3">
-                  {/* Publisher identity */}
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary font-serif font-bold text-xl shrink-0">
-                      {(book.publisher ?? "P").charAt(0)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold leading-tight">
-                        {book.publisher ?? "Publisher"}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Official Publisher
-                      </p>
-                    </div>
-                    <Badge
-                      variant="outline"
-                      className="ml-auto text-[10px] text-green-600 border-green-200 bg-green-50 h-5"
-                    >
-                      Verified
-                    </Badge>
-                  </div>
-
-                  {/* Editorial note */}
-                  <blockquote className="relative pl-5 border-l-[3px] border-primary/30 space-y-1">
-                    <span className="absolute -top-2 left-2 text-primary/20 text-4xl font-serif leading-none select-none">
-                      "
-                    </span>
-                    <p className="italic text-sm text-muted-foreground leading-relaxed">
-                      {book.description
-                        ? book.description.slice(0, 260) +
-                          (book.description.length > 260 ? "…" : "")
-                        : "An exceptional work from our catalogue, celebrated for its literary merit and enduring relevance to readers across generations."}
-                    </p>
-                    <p className="text-xs font-semibold text-foreground not-italic">
-                      — {book.publisher ?? "The Publisher"}
-                    </p>
-                  </blockquote>
-
-                  {/* Publisher meta grid */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {[
-                      { label: "Imprint", value: book.publisher ?? "—" },
-                      { label: "Edition", value: "1st Edition" },
-                      { label: "Publication Date", value: book.pubDate },
-                      { label: "Country of Origin", value: "India" },
-                    ].map(({ label, value }) => (
-                      <div
-                        key={label}
-                        className="rounded-xl bg-accent/50 border border-border/60 px-3 py-2.5"
-                      >
-                        <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
-                          {label}
-                        </p>
-                        <p className="text-sm font-medium text-foreground mt-0.5">
-                          {value}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Publisher images / "From the Publisher" gallery */}
-                  <div className="space-y-2">
-                    <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
-                      From the Publisher
-                    </p>
-                    <div className="grid grid-cols-3 gap-2">
-                      {[
-                        book.cover,
-                        ...(book.gallery ?? []),
-                        book.cover,
-                      ]
-                        .slice(0, 3)
-                        .map((src, i) => (
-                          <div
-                            key={i}
-                            className="aspect-square rounded-lg overflow-hidden border bg-muted"
-                          >
-                            <img
-                              src={src}
-                              alt={`Publisher view ${i + 1}`}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ))}
-                    </div>
-                    <p className="text-[11px] text-muted-foreground italic">
-                      Inside views, design highlights, and excerpts curated by the publisher.
-                    </p>
-                  </div>
-                </div>
-              </AccordionPanel>
-
-              {/* ── 2. Book Details ───────────────────────────────────────── */}
+              {/* ── Book Details ───────────────────────────────────────── */}
               <AccordionPanel
                 id="bookdetails"
                 icon={ListCollapse}
