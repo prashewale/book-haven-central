@@ -163,7 +163,7 @@ function StoreRow({ store, isbn }: { store: StoreOption; isbn: string }) {
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        <span className="text-xs font-bold text-foreground">{store.price}</span>
+        {/* <span className="text-xs font-bold text-foreground">{store.price}</span> */}
         <a
           href={store.url(isbn)}
           target="_blank"
@@ -251,11 +251,11 @@ export function BuyingOptions({ book }: BuyingOptionsProps) {
       </div>
 
       {/* Footer note */}
-      <div className="border-t bg-accent/20 px-4 py-2.5">
+      {/* <div className="border-t bg-accent/20 px-4 py-2.5">
         <p className="text-[10px] text-muted-foreground">
           💡 Prices are indicative. Links open the retailer's website.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 }
