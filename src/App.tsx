@@ -22,6 +22,7 @@ import PublishEbook from "@/pages/PublishEbook";
 import NotFound from "@/pages/NotFound";
 import Profile from "@/pages/Profile";
 import Careers from "@/pages/Careers";
+import { MembershipFloat } from "./components/sections/MembershipFloat";
 
 const queryClient = new QueryClient();
 

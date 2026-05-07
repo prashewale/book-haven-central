@@ -14,6 +14,7 @@ import { FeaturedAuthor } from "@/components/sections/FeaturedAuthor";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
+import { MembershipFloat } from "@/components/sections/MembershipFloat";
 
 export default function Home() {
   return (
