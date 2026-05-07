@@ -298,8 +298,8 @@ export default function BookDetail() {
   const [zoomSrc, setZoomSrc] = useState<string | null>(null);
   const [descExpanded, setDescExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<
-    "description" | "details" | "reviews"
-  >("description");
+     "details" | "reviews"
+  >("details");
   const [reviewFilter, setReviewFilter] = useState<number | null>(null);
   // Accordion: one open at a time; default open = book details
   const [openAccordion, setOpenAccordion] = useState<string | null>(
@@ -590,7 +590,7 @@ export default function BookDetail() {
             {/* ── Tabs ── */}
             <div ref={reviewsRef} className="space-y-4 pt-2">
               <div className="flex border-b gap-6">
-                {(["description", "details", "reviews"] as const).map((tab) => (
+                {(["details", "reviews"] as const).map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
@@ -607,7 +607,7 @@ export default function BookDetail() {
               </div>
 
               <AnimatePresence mode="wait">
-                {activeTab === "description" && (
+                {/* {activeTab === "description" && (
                   <motion.div
                     key="description"
                     initial={{ opacity: 0, y: 8 }}
@@ -638,7 +638,7 @@ export default function BookDetail() {
                       </div>
                     </div>
                   </motion.div>
-                )}
+                )} */}
 
                 {activeTab === "details" && (
                   <motion.div
@@ -819,7 +819,7 @@ export default function BookDetail() {
               <AccordionPanel
                 id="bookdetails"
                 icon={ListCollapse}
-                title="Book Details"
+                title="More Info"
                 openId={openAccordion}
                 setOpenId={setOpenAccordion}
               >
