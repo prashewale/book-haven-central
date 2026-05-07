@@ -1066,6 +1066,82 @@ export default function BookDetail() {
         </div>
       </div>
 
+      {/* ── From the Publisher (full width) ── */}
+      <section className="container mx-auto px-4 mt-16">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="h-8 w-1 rounded-full bg-primary" />
+          <h2 className="text-2xl md:text-3xl font-serif font-bold">
+            From the Publisher
+          </h2>
+        </div>
+        <div className="rounded-2xl border bg-card p-6 md:p-8 space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary font-serif font-bold text-2xl">
+              {(book.publisher ?? "P").charAt(0)}
+            </div>
+            <div>
+              <p className="text-base font-semibold">{book.publisher ?? "Publisher"}</p>
+              <p className="text-xs text-muted-foreground">Official Publisher · Verified</p>
+            </div>
+          </div>
+
+          <blockquote className="relative pl-5 border-l-[3px] border-primary/30">
+            <p className="italic text-sm md:text-base text-muted-foreground leading-relaxed">
+              {book.description
+                ? book.description.slice(0, 320) + (book.description.length > 320 ? "…" : "")
+                : "An exceptional work from our catalogue, celebrated for its literary merit and enduring relevance."}
+            </p>
+            <p className="mt-2 text-xs font-semibold text-foreground not-italic">
+              — {book.publisher ?? "The Publisher"}
+            </p>
+          </blockquote>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Imprint", value: book.publisher ?? "—" },
+              { label: "Edition", value: "1st Edition" },
+              { label: "Publication Date", value: book.pubDate },
+              { label: "Country of Origin", value: "India" },
+            ].map(({ label, value }) => (
+              <div
+                key={label}
+                className="rounded-xl bg-accent/40 border border-border/60 px-3 py-2.5"
+              >
+                <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                  {label}
+                </p>
+                <p className="text-sm font-medium text-foreground mt-0.5">{value}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              Inside the book
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {[book.cover, ...(book.gallery ?? []), book.cover, book.cover]
+                .slice(0, 4)
+                .map((src, i) => (
+                  <div
+                    key={i}
+                    className="aspect-square rounded-xl overflow-hidden border bg-muted"
+                  >
+                    <img
+                      src={src}
+                      alt={`Publisher view ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+            </div>
+            <p className="text-xs text-muted-foreground italic">
+              Inside views, design highlights, and excerpts curated by the publisher.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── Related books ── */}
       {related.length > 0 && (
         <section className="container mx-auto px-4 mt-20 pb-16">
