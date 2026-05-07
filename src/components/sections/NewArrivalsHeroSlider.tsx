@@ -56,7 +56,7 @@ export function NewArrivalsHeroSlider() {
               <p className="text-xs md:text-sm text-muted-foreground">
                 by <span className="font-medium">{book.author}</span>
               </p>
-              <p className="text-xs text-muted-foreground line-clamp-3 max-w-md">
+              <p className="text-sm text-muted-foreground line-clamp-6 max-w-md">
                 {book.description}
               </p>
             </div>
@@ -79,7 +79,7 @@ export function NewArrivalsHeroSlider() {
               </div>
               <Button asChild size="sm" className="rounded-full">
                 <Link to={`/books/${book.slug}`}>
-                  View Book <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                  Buy Now <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                 </Link>
               </Button>
             </div>
@@ -99,7 +99,7 @@ export function NewArrivalsHeroSlider() {
               <img
                 src={book.cover}
                 alt={book.title}
-                className="h-[230px] md:h-[280px] lg:h-[330px] w-auto object-cover rounded-lg shadow-2xl"
+                className="h-[200px] md:h-[250px] lg:h-[300px] w-auto object-cover rounded-lg shadow-2xl"
               />
             </Link>
           </motion.div>
