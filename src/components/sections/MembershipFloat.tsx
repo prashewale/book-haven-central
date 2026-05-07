@@ -8,7 +8,7 @@ export function MembershipFloat() {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <div className="fixed bottom-8 right-6 z-50 hidden lg:block">
+    <div className="fixed bottom-8 right-6 z-40 hidden lg:block">
       <AnimatePresence mode="wait">
         {isExpanded ? (
           /* ── Full Expanded Banner ── */
