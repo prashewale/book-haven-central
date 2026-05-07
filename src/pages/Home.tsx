@@ -1,4 +1,6 @@
 import { HeroWithOffer } from "@/components/sections/HeroWithOffer";
+import { SaleOfferWithFeaturedVideo } from "@/components/sections/SaleOfferWithFeaturedVideo";
+import { TodaysOffer } from "@/components/sections/TodaysOffer";
 import { OnSaleCountdown } from "@/components/sections/OnSaleCountdown";
 import {
   NewArrivalsSection,
@@ -12,12 +14,13 @@ import { FeaturedAuthor } from "@/components/sections/FeaturedAuthor";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
-import { VideoSlider } from "@/components/sections/VideoSlider";
 
 export default function Home() {
   return (
     <main>
       <HeroWithOffer />
+      <SaleOfferWithFeaturedVideo />
+      <TodaysOffer />
       <OnSaleCountdown />
       <NewArrivalsSection />
       <UpcomingSection />
@@ -26,7 +29,6 @@ export default function Home() {
       <RecentBestsellerSection />
       <VerticalCategories />
       <FeaturedAuthor />
-      <VideoSlider />
       <Testimonials />
       <InstagramFeed />
       <Newsletter />
