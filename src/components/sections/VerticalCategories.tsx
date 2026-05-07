@@ -4,16 +4,15 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, ChevronUp, ChevronDown, BookOpen, ArrowRight } from "lucide-react";
 import { COLLECTIONS, BOOKS } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-
 const GENRE_COLORS: Record<string, string> = {
-  Fiction: "#e8d4b4",
-  Romance: "#ffd1dc",
-  Mystery: "#d3acda",
-  "Sci-Fi": "#b8d4f0",
-  "Non-Fiction": "#dff698",
-  "Self-Help": "#aaf0d1",
-  Historical: "#ffe5b4",
-  Classic: "#e8e4b9",
+  Fiction: "#c8b6a6",
+  Romance: "#d8a7b1",
+  Mystery: "#9f86c0",
+  "Sci-Fi": "#8faecf",
+  "Non-Fiction": "#b8c99d",
+  "Self-Help": "#8fc4b2",
+  Historical: "#d6b38a",
+  Classic: "#b7b39a",
 };
 
 const AUTOPLAY_INTERVAL = 3500;
@@ -171,7 +170,7 @@ export function VerticalCategories() {
                         className={cn(
                           isActive
                             ? "text-xl md:text-2xl lg:text-3xl font-bold text-white"
-                            : "text-sm md:text-base font-serif",
+                            : "text-base md:text-base",
                           "tracking-tight leading-none transition-all duration-500"
                         )}
                         style={{
