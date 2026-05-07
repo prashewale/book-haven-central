@@ -1,61 +1,59 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { BOOKS } from "@/lib/mock-data";
+import { BookSlider } from "@/components/product/BookSlider";
 import { cn } from "@/lib/utils";
 
 const TABS = [
   { value: "new", label: "New Arrivals", filter: (b: typeof BOOKS[0]) => b.isNewRelease || b.id >= "2020" },
   { value: "upcoming", label: "Upcoming", filter: (b: typeof BOOKS[0]) => b.id >= "2022" },
-  { value: "forthcoming", label: "Forthcoming", filter: (b: typeof BOOKS[0]) => b.id >= "2023" },
+  { value: "featured", label: "Featured", filter: (b: typeof BOOKS[0]) => !!b.isBestseller },
+  { value: "alltime", label: "All Time Bestseller", filter: () => true, sort: (a: typeof BOOKS[0], b: typeof BOOKS[0]) => b.reviewCount - a.reviewCount },
+  { value: "recent", label: "Recent Bestseller", filter: (b: typeof BOOKS[0]) => !!b.isBestseller, sort: (a: typeof BOOKS[0], b: typeof BOOKS[0]) => b.rating - a.rating },
   { value: "today", label: "Today's Offer", filter: (b: typeof BOOKS[0]) => !!b.onSale },
 ];
 
 export function TodaysOffer() {
   const [active, setActive] = useState("new");
   const tab = TABS.find((t) => t.value === active)!;
-  const items = BOOKS.filter(tab.filter).slice(0, 4);
+  let items = BOOKS.filter(tab.filter);
+  if ("sort" in tab && tab.sort) items = [...items].sort(tab.sort);
+  items = items.slice(0, 12);
 
   return (
-    <div className="rounded-2xl border bg-card overflow-hidden h-full flex flex-col">
-      <div className="flex border-b bg-accent/30 overflow-x-auto">
-        {TABS.map((t) => (
-          <button
-            key={t.value}
-            onClick={() => setActive(t.value)}
-            className={cn(
-              "flex-1 px-3 py-2.5 text-xs font-semibold whitespace-nowrap transition-colors border-b-2",
-              active === t.value
-                ? "border-primary text-primary bg-background"
-                : "border-transparent text-muted-foreground hover:text-foreground",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
+    <section className="py-10 bg-accent/10">
+      <div className="container mx-auto px-4">
+        <div className="mb-5">
+          <h2 className="text-xl md:text-2xl font-serif font-bold">Today's Offer</h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Hand-picked deals refreshed daily
+          </p>
+        </div>
+
+        <div className="flex gap-1.5 overflow-x-auto pb-3 mb-4 -mx-1 px-1 scrollbar-hide">
+          {TABS.map((t) => (
+            <button
+              key={t.value}
+              onClick={() => setActive(t.value)}
+              className={cn(
+                "px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap rounded-full border transition-colors",
+                active === t.value
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "bg-background border-border text-muted-foreground hover:text-foreground hover:border-primary/40",
+              )}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {items.length ? (
+          <BookSlider books={items} minVisible={6} />
+        ) : (
+          <p className="text-sm text-muted-foreground py-8 text-center">
+            No items in this category yet.
+          </p>
+        )}
       </div>
-      <div className="p-3 grid grid-cols-2 gap-3 flex-1">
-        {items.map((b) => (
-          <Link
-            key={b.id}
-            to={`/books/${b.slug}`}
-            className="group flex flex-col gap-1.5"
-          >
-            <div className="aspect-[3/4] rounded-md overflow-hidden bg-muted">
-              <img
-                src={b.cover}
-                alt={b.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-              />
-            </div>
-            <p className="text-[11px] font-medium leading-tight line-clamp-2 group-hover:text-primary">
-              {b.title}
-            </p>
-            <p className="text-[11px] font-bold text-primary">
-              ₹{(b.discountPrice ?? b.price).toFixed(0)}
-            </p>
-          </Link>
-        ))}
-      </div>
-    </div>
+    </section>
   );
 }
