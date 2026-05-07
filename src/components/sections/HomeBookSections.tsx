@@ -37,7 +37,7 @@ function Section({ title, subtitle, books, href = "/books", bg = "" }: Props) {
 }
 
 export function NewArrivalsSection() {
-  return <Section title="New Arrivals" subtitle="Fresh off the press" books={BOOKS.slice(0, 12)} />;
+  return <Section title="New Arrivals" subtitle="Fresh off the press" books={BOOKS.slice(6, 20)} />;
 }
 
 export function UpcomingSection() {
@@ -45,7 +45,7 @@ export function UpcomingSection() {
     <Section
       title="Upcoming Releases"
       subtitle="Pre-order tomorrow's bestsellers"
-      books={BOOKS.slice(6, 18)}
+      books={BOOKS.slice(20, 30)}
       bg="bg-accent/20"
     />
   );
@@ -64,7 +64,7 @@ export function FeaturedSection() {
 export function AllTimeBestsellerSection() {
   const books = [...BOOKS]
     .sort((a, b) => b.reviewCount - a.reviewCount)
-    .slice(0, 12);
+    .slice(4, 16);
   return (
     <Section
       title="All Time Bestsellers"
@@ -79,6 +79,6 @@ export function RecentBestsellerSection() {
   const books = [...BOOKS]
     .filter((b) => b.isBestseller)
     .sort((a, b) => b.rating - a.rating)
-    .slice(0, 12);
+    .slice(8, 20);
   return <Section title="Recent Bestsellers" subtitle="Trending right now" books={books} />;
 }
