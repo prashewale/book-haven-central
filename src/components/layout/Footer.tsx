@@ -4,8 +4,8 @@ import { BOOKS } from "@/lib/mock-data";
 
 export default function Footer() {
   const editorsPick = [...BOOKS]
-    .filter((b) => b.rating >= 4.7)
-    .slice(0, 4);
+    .filter((b) => b.rating >= 4)
+    .slice(0, 16);
 
   return (
     <footer className="border-t bg-card">
