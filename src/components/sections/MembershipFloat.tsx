@@ -39,7 +39,7 @@ export function MembershipFloat() {
 
                 <div className="flex-1 space-y-3 pr-8">
                   <h3 className="font-serif text-xl font-bold leading-tight text-[hsl(var(--deep-brown))]">
-                    Join Book Haven Membership
+                    Join MPH Membership
                   </h3>
 
                   <p className="text-sm text-muted-foreground leading-relaxed">
@@ -94,7 +94,7 @@ export function MembershipFloat() {
             </div>
             <div>
               <p className="text-sm font-semibold text-[hsl(var(--deep-brown))]">
-                Book Haven Membership
+                MPH Membership
               </p>
               <p className="text-[10px] text-muted-foreground -mt-0.5">
                 Up to 40% off • Join now
