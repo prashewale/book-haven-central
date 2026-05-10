@@ -11,6 +11,8 @@ import {
 } from "@/components/sections/HomeBookSections";
 import { VerticalCategories } from "@/components/sections/VerticalCategories";
 import { FeaturedAuthor } from "@/components/sections/FeaturedAuthor";
+import { AuthorBirthdaySpecial } from "@/components/sections/AuthorBirthdaySpecial";
+import { FestivalOfMonth } from "@/components/sections/FestivalOfMonth";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { InstagramFeed } from "@/components/sections/InstagramFeed";
 import { Newsletter } from "@/components/sections/Newsletter";
@@ -21,17 +23,21 @@ export default function Home() {
     <main>
       <HeroWithOffer />
       <SaleOfferWithFeaturedVideo />
-      <TodaysOffer />
-      <OnSaleCountdown />
+      {/* <OnSaleCountdown /> */}
       <NewArrivalsSection />
-      <UpcomingSection />
       <FeaturedSection />
       <AllTimeBestsellerSection />
+
+      <AuthorBirthdaySpecial />
+      <FestivalOfMonth />
       <RecentBestsellerSection />
+      {/* <UpcomingSection /> */}
       <VerticalCategories />
       <FeaturedAuthor />
+      <TodaysOffer />
+
       <Testimonials />
-      <InstagramFeed />
+      {/* <InstagramFeed /> */}
       <Newsletter />
     </main>
   );
